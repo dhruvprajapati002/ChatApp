@@ -12,8 +12,9 @@ import ChatHeader from '@/components/chat/ChatHeader';
 import MessageBubble from '@/components/chat/MessageBubble';
 import MessageInput from '@/components/chat/MessageInput';
 import TypingIndicator from '@/components/chat/TypingIndicator';
-import { LogOut, MessageSquare, Sparkles, Wifi, WifiOff } from 'lucide-react';
+import { LogOut, MessageSquare, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Logo from '@/components/ui/Logo';
 
 export default function ChatPage() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -24,10 +25,12 @@ export default function ChatPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [onlineUserIds, setOnlineUserIds] = useState<string[]>([]);
-
+  
+  // Use a ref to scroll to bottom
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const router = useRouter();
+  
   const { isConnected, joinRoom, sendMessage, startTyping, onReceiveMessage, onUserTyping, socket } = useSocket();
 
   const scrollToBottom = () => {
@@ -239,104 +242,62 @@ export default function ChatPage() {
   if (!currentUser) return null;
 
   return (
-    <div className="h-screen flex bg-slate-950 text-white">
-      {/* Background glows & grid */}
-      <div className="pointer-events-none fixed inset-0">
-        <div className="absolute -top-40 -left-40 w-80 h-80 bg-sky-500/20 blur-3xl rounded-full" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-violet-500/20 blur-3xl rounded-full" />
-        <div
-          className="opacity-[0.04]"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 1px 1px, rgba(139, 92, 246, 0.3) 1px, transparent 0)',
-            backgroundSize: '32px 32px',
-          }}
-        />
+    <div className="h-screen flex bg-slate-950 text-white overflow-hidden">
+      {/* Background Effect */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-violet-600/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-sky-500/10 blur-[120px] rounded-full" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]"></div>
       </div>
 
-      {/* Sidebar */}
+      {/* Sidebar Container */}
       <motion.div
         initial={{ x: -300, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        transition={{ type: "spring", damping: 25 }}
-        className={`${selectedUser ? 'hidden lg:flex' : 'flex'} lg:w-80 w-full flex-col border-r border-slate-800 bg-slate-900/90 backdrop-blur-xl shadow-2xl`}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className={`${selectedUser ? 'hidden lg:flex' : 'flex'} lg:w-[380px] w-full flex-col z-10`}
       >
         {/* Sidebar Header */}
-        <div className="p-6 border-b border-slate-800 bg-gradient-to-r from-slate-900/95 to-slate-800/95 backdrop-blur-xl">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              {currentUser.avatar ? (
-                <img 
-                  src={currentUser.avatar} 
-                  alt={currentUser.username}
-                  className="w-14 h-14 rounded-full ring-3 ring-sky-500/30 object-cover shadow-2xl"
-                />
-              ) : (
-                <div className="w-14 h-14 bg-gradient-to-br from-sky-500 to-violet-500 backdrop-blur rounded-full flex items-center justify-center text-white font-bold text-xl ring-3 ring-sky-500/30 shadow-2xl">
-                  {currentUser.username.charAt(0).toUpperCase()}
-                </div>
-              )}
-              <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-slate-100 to-slate-200 bg-clip-text text-transparent">
-                  PulseChat
-                </h1>
-                <p className="text-sm text-slate-400">{currentUser.username}</p>
-              </div>
-            </div>
-            <motion.button
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleLogout}
-              className="p-2 hover:bg-slate-800/50 rounded-2xl text-slate-400 hover:text-slate-200 transition-all backdrop-blur-sm"
-              title="Logout"
-            >
-              <LogOut size={20} />
-            </motion.button>
+        <div className="p-4 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/60 border-r border-slate-800/60 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2">
+             <Logo size="sm" className="shadow-none ring-0 w-8 h-8 rounded-lg" />
+             <span className="font-bold text-lg text-white tracking-tight">PulseChat</span>
           </div>
-
-          {/* Connection Status */}
-          <div className="flex items-center gap-2 text-sm bg-slate-800/50 backdrop-blur px-4 py-2.5 rounded-2xl border border-slate-700/50">
-            {isConnected ? (
-              <>
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                <span className="font-semibold text-emerald-300">Connected</span>
-              </>
-            ) : (
-              <>
-                <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
-                <span className="font-semibold text-red-300">Connecting...</span>
-              </>
-            )}
+          
+          <div className="flex items-center gap-3">
+             <div className="relative group">
+                {currentUser.avatar ? (
+                  <img src={currentUser.avatar} alt="Me" className="w-8 h-8 rounded-full object-cover ring-2 ring-slate-800 group-hover:ring-sky-500/50 transition-all" />
+                ) : (
+                  <div className="w-8 h-8 bg-slate-800 rounded-full flex items-center justify-center font-bold text-xs text-slate-300 ring-2 ring-slate-800 group-hover:bg-slate-700 transition-all">
+                    {currentUser.username.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <div className={`absolute bottom-0 right-0 w-2.5 h-2.5 border-2 border-slate-900 rounded-full ${isConnected ? 'bg-emerald-500' : 'bg-red-500'}`}></div>
+             </div>
+             
+             <button 
+                onClick={handleLogout}
+                className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-all"
+                title="Logout"
+              >
+                <LogOut size={18} />
+              </button>
           </div>
         </div>
 
         {/* User List */}
-        <AnimatePresence mode="wait">
-          {users.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex-1 flex items-center justify-center p-12"
-            >
-              <div className="text-center">
-                <MessageSquare className="mx-auto mb-4 text-slate-600" size={64} />
-                <p className="text-slate-400 font-medium mb-2 text-lg">No users yet</p>
-                <p className="text-sm text-slate-500">Register another account to chat!</p>
-              </div>
-            </motion.div>
-          ) : (
-            <UserList
-              users={users}
-              selectedUserId={selectedUser?.id}
-              onSelectUser={setSelectedUser}
-            />
-          )}
-        </AnimatePresence>
+        <div className="flex-1 min-h-0 bg-transparent">
+          <UserList
+            users={users}
+            selectedUserId={selectedUser?.id}
+            onSelectUser={setSelectedUser}
+          />
+        </div>
       </motion.div>
 
       {/* Chat Area */}
-      <div className={`${selectedUser ? 'flex' : 'hidden lg:flex'} flex-1 flex-col bg-slate-900/90 backdrop-blur-xl border-l border-slate-800`}>
+      <div className={`${selectedUser ? 'flex' : 'hidden lg:flex'} flex-1 flex-col bg-slate-900/40 backdrop-blur-xl relative z-10`}>
         <AnimatePresence mode="wait">
           {selectedUser ? (
             <motion.div
@@ -344,7 +305,7 @@ export default function ChatPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col"
+              className="flex-1 flex flex-col h-full"
             >
               <ChatHeader 
                 user={selectedUser} 
@@ -352,33 +313,35 @@ export default function ChatPage() {
               />
 
               {/* Messages Container */}
-              <div className="flex-1 overflow-y-auto p-8 space-y-5 bg-slate-950/50">
-                <AnimatePresence>
-                  {messages.length === 0 ? (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      className="flex items-center justify-center h-full"
-                    >
-                      <div className="text-center text-slate-500 bg-slate-900/50 backdrop-blur-xl p-12 rounded-3xl border border-slate-800/50 shadow-2xl">
-                        <MessageSquare className="mx-auto mb-4 text-slate-600" size={56} />
-                        <p className="text-xl font-medium mb-1">No messages yet</p>
-                        <p className="text-sm">Start the conversation by saying hi! 👋</p>
-                      </div>
-                    </motion.div>
-                  ) : (
-                    messages.map((msg, idx) => (
-                      <MessageBubble
-                        key={`${msg.timestamp}-${idx}`}
-                        message={msg}
-                        isOwn={msg.senderId === currentUser.id}
-                      />
-                    ))
-                  )}
-                </AnimatePresence>
-                {isTyping && <TypingIndicator />}
-                <div ref={messagesEndRef} />
+              <div className="flex-1 overflow-y-auto custom-scrollbar p-0">
+                <div className="min-h-full flex flex-col justify-end p-4 md:p-8 space-y-6">
+                  <AnimatePresence>
+                    {messages.length === 0 ? (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex-1 flex flex-col items-center justify-center py-20 opacity-50"
+                      >
+                         <div className="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center mb-4">
+                            <MessageSquare className="text-slate-600" size={32} />
+                         </div>
+                         <p className="text-slate-400 font-medium">No messages yet</p>
+                      </motion.div>
+                    ) : (
+                      messages.map((msg, idx) => (
+                        <div key={`${msg.timestamp}-${idx}`}>
+                          {/* Date Separator (Optional - logic can be added later) */}
+                          <MessageBubble
+                            message={msg}
+                            isOwn={msg.senderId === currentUser.id}
+                          />
+                        </div>
+                      ))
+                    )}
+                  </AnimatePresence>
+                  {isTyping && <TypingIndicator />}
+                  <div ref={messagesEndRef} className="h-px" />
+                </div>
               </div>
 
               <MessageInput
@@ -390,34 +353,18 @@ export default function ChatPage() {
           ) : (
             <motion.div
               key="empty-view"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex-1 flex items-center justify-center bg-slate-950/50"
+              className="flex-1 flex items-center justify-center"
             >
-              <div className="text-center px-12">
-                <motion.div
-                  animate={{ 
-                    scale: [1, 1.05, 1],
-                    rotate: [0, 3, -3, 0]
-                  }}
-                  transition={{ 
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="text-7xl mb-8 bg-gradient-to-r from-sky-400 to-violet-400 bg-clip-text text-transparent"
-                >
-                  💬
-                </motion.div>
-                <h2 className="text-3xl font-bold text-slate-200 mb-3">
-                  Welcome to PulseChat!
-                </h2>
-                <p className="text-slate-500 max-w-md text-lg">
-                  {users.length === 0 
-                    ? 'Register another account to start your first conversation'
-                    : 'Select a user from the sidebar to start chatting'
-                  }
+              <div className="text-center p-8">
+                <div className="w-24 h-24 bg-gradient-to-tr from-sky-500/20 to-violet-500/20 rounded-3xl flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-white/5">
+                   <MessageSquare className="text-sky-400" size={40} />
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-3">PulseChat</h2>
+                <p className="text-slate-400 max-w-sm mx-auto">
+                  Select a context to start messaging or create a new group to collaborate with your team.
                 </p>
               </div>
             </motion.div>

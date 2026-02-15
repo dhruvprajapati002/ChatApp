@@ -6,6 +6,7 @@ import { api } from '@/lib/api';
 import { setAuth } from '@/lib/auth';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Navbar from '@/components/Navbar';
 import {
   MessageCircle,
   ShieldCheck,
@@ -14,6 +15,9 @@ import {
   ArrowRight,
   Wifi,
   CheckCircle2,
+  Zap,
+  Globe,
+  Lock
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -36,291 +40,241 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
-      {/* Background: gradient + orbits */}
-      <div className="pointer-events-none fixed inset-0">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-violet-600/25 blur-3xl rounded-full" />
-        <div className="absolute -bottom-40 -right-40 w-[28rem] h-[28rem] bg-sky-500/25 blur-3xl rounded-full" />
-        <div className="absolute inset-0 opacity-[0.08]">
-          <div
-            className="w-full h-full"
-            style={{
-              backgroundImage:
-                'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.5) 1px, transparent 0)',
-              backgroundSize: '28px 28px',
-            }}
-          />
-        </div>
-      </div>
+    <div className="min-h-screen bg-slate-950 text-white overflow-hidden selection:bg-sky-500/30">
+      <Navbar />
 
-      <main className="relative z-10 max-w-6xl mx-auto px-4 py-8 md:py-14 flex flex-col gap-12 md:gap-16">
-        {/* Top nav */}
-        <header className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-sky-400 to-violet-500 flex items-center justify-center shadow-lg shadow-sky-500/40">
-              <MessageCircle className="w-4 h-4" />
-            </div>
-            <span className="font-semibold tracking-tight">PulseChat</span>
-          </div>
-          <div className="flex items-center gap-3 text-xs text-slate-400">
-            <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-900/80 border border-slate-700/70">
-              <Wifi className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Realtime presence</span>
-            </div>
-            <button
-              onClick={() => router.push('/login')}
-              className="hidden sm:inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-full border border-slate-600/70 hover:border-slate-400 hover:bg-slate-900/60 transition-colors"
-            >
-              Sign in
-            </button>
-          </div>
-        </header>
+      {/* Dynamic Background */}
 
-        {/* Hero row */}
-        <section className="flex flex-col md:flex-row items-center gap-10 md:gap-14">
-          {/* Left: text column */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex-1 space-y-6"
+      <main className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-24 md:pt-48 md:pb-32">
+        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+          
+          {/* Left Content */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex-1 text-center lg:text-left space-y-8"
           >
-            <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-slate-900/70 border border-slate-700/70 mb-1">
-              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[11px] font-medium text-slate-200">
-                Production-grade chat · OTP-secured auth · Realtime presence
-              </span>
-            </div>
+            
 
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.2rem] font-extrabold tracking-tight leading-tight">
-              Build conversations that feel{' '}
-              <span className="bg-gradient-to-r from-sky-400 via-cyan-300 to-violet-400 bg-clip-text text-transparent">
-                instant
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
+              Chat that feels <br className="hidden lg:block"/>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-violet-400 to-fuchsia-400 animate-gradient-x">
+                magically instant
               </span>
-              , secure and alive.
             </h1>
 
-            <p className="text-slate-300 text-sm sm:text-base max-w-xl">
-              PulseChat combines smooth animations, live user status, OTP email verification and
-              modern auth flows into a single beautiful messaging experience.
+            <p className="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+              Experience the next evolution of messaging. Real-time typing indicators, 
+              secure end-to-end encryption, and a beautifully crafted interface that 
+              makes every conversation a delight.
             </p>
 
-            {/* Feature chips */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs mt-4">
-              <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-slate-900/80 border border-slate-700/80">
-                  <Users className="w-4 h-4 text-sky-400" />
-                </div>
-                <span className="text-slate-200">Online / offline presence</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-slate-900/80 border border-slate-700/80">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                </div>
-                <span className="text-slate-200">OTP email verification</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-slate-900/80 border border-slate-700/80">
-                  <Sparkles className="w-4 h-4 text-violet-400" />
-                </div>
-                <span className="text-slate-200">Framer Motion UI</span>
-              </div>
-            </div>
-
-            {/* Primary CTA buttons */}
-            <div className="flex flex-wrap gap-3 mt-6">
-              <motion.button
-                whileHover={{ scale: 1.04, y: -1 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => router.push('/login')}
-                className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-500 text-white font-semibold shadow-lg shadow-sky-500/40 hover:from-sky-400 hover:to-blue-400 transition-all"
-              >
-                Login
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.04, y: -1 }}
-                whileTap={{ scale: 0.97 }}
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <button 
                 onClick={() => router.push('/register')}
-                className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-slate-600/80 bg-slate-900/70 text-slate-100 font-semibold hover:border-slate-300 hover:bg-slate-900/90 transition-all"
+                className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-sky-500 to-violet-600 rounded-2xl text-white font-bold hover:shadow-lg hover:shadow-sky-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
               >
-                Create account
-              </motion.button>
+                Start Chatting Free
+              </button>
+              <button 
+                onClick={() => router.push('/login')}
+                className="w-full sm:w-auto px-8 py-4 bg-slate-800/50 text-white rounded-2xl font-bold border border-slate-700 hover:bg-slate-800 hover:border-slate-600 transition-all duration-200"
+              >
+                Live Demo
+              </button>
             </div>
 
-            <p className="text-[11px] text-slate-500 mt-2">
-              By continuing, you agree to our{' '}
-              <Link href="/terms" className="text-sky-400 hover:underline">
-                Terms
-              </Link>{' '}
-              and{' '}
-              <Link href="/privacy" className="text-sky-400 hover:underline">
-                Privacy Policy
-              </Link>
-              .
-            </p>
+            <div className="pt-8 grid grid-cols-2 sm:grid-cols-3 gap-6 border-t border-slate-800/60">
+              <div className="space-y-1">
+                <h4 className="text-2xl font-bold text-white">100ms</h4>
+                <p className="text-slate-500 text-sm">Latency</p>
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-2xl font-bold text-white">99.9%</h4>
+                <p className="text-slate-500 text-sm">Uptime</p>
+              </div>
+              <div className="col-span-2 sm:col-span-1 space-y-1">
+                <h4 className="text-2xl font-bold text-white">256-bit</h4>
+                <p className="text-slate-500 text-sm">Encryption</p>
+              </div>
+            </div>
           </motion.div>
 
-          {/* Right: animated auth + chat preview */}
-          <motion.div
-            initial={{ opacity: 0, x: 40, scale: 0.97 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="w-full max-w-md relative"
+          {/* Right Content - Visual */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, rotateX: 10 }}
+            animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+            className="flex-1 w-full max-w-[600px] perspective-1000"
           >
-            {/* Floating accent shapes */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 0.5, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="absolute -top-6 -right-4 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-400/40 text-[11px] text-emerald-200 flex items-center gap-1"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Live typing indicators
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 0.4, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="absolute -bottom-6 -left-4 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-400/40 text-[11px] text-violet-200"
-            >
-              OTP-secured onboarding
-            </motion.div>
-
-            {/* Main card */}
-            <div className="relative">
-              {/* Glow border */}
-              <div className="absolute -inset-0.5 bg-gradient-to-br from-sky-500 via-blue-500 to-violet-500 rounded-3xl opacity-70 blur-xl" />
-              <div className="relative bg-slate-950/90 border border-slate-800 rounded-3xl p-6 sm:p-7 shadow-2xl backdrop-blur-xl">
-                {/* Header row */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="p-2 rounded-xl bg-slate-900 border border-slate-700">
-                      <Sparkles className="w-4 h-4 text-sky-300" />
+            <div className="relative group">
+              {/* Glow Effect */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-sky-500 via-violet-500 to-fuchsia-500 rounded-[2.5rem] blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
+              
+              <div className="relative bg-slate-900/90 border border-slate-700/50 rounded-[2rem] p-6 lg:p-8 backdrop-blur-2xl shadow-2xl overflow-hidden">
+                
+                {/* Auth Area */}
+                <div className="space-y-6">
+                  <div className="text-center space-y-2">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-sky-400 to-violet-500 mx-auto flex items-center justify-center shadow-lg transform group-hover:rotate-12 transition-transform duration-500">
+                      <Zap className="w-8 h-8 text-white" />
                     </div>
-                    <div>
-                      <p className="text-xs font-semibold text-slate-200">
-                        Get started in seconds
-                      </p>
-                      <p className="text-[11px] text-slate-500">
-                        Choose how you want to join PulseChat
-                      </p>
+                    <h3 className="text-2xl font-bold text-white">Welcome Back</h3>
+                    <p className="text-slate-400 text-sm">Sign in to access your workspace</p>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex justify-center">
+                      <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={handleGoogleError}
+                        theme="filled_black"
+                        shape="pill"
+                        size="large"
+                        width="100%"
+                        logo_alignment="left"
+                      />
+                    </div>
+                    
+                    <div className="relative flex py-2 items-center">
+                      <div className="flex-grow border-t border-slate-700"></div>
+                      <span className="flex-shrink-0 mx-4 text-slate-500 text-xs uppercase tracking-wider">Or continue with</span>
+                      <div className="flex-grow border-t border-slate-700"></div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <button onClick={() => router.push('/login')} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-800/50 border border-slate-700 hover:bg-slate-800 hover:border-slate-600 transition-all group/btn">
+                        <Lock className="w-4 h-4 text-slate-400 group-hover/btn:text-sky-400 transition-colors" />
+                        <span className="text-sm font-medium text-slate-300">Login</span>
+                      </button>
+                      <button onClick={() => router.push('/register')} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-800/50 border border-slate-700 hover:bg-slate-800 hover:border-slate-600 transition-all group/btn">
+                        <Globe className="w-4 h-4 text-slate-400 group-hover/btn:text-violet-400 transition-colors" />
+                        <span className="text-sm font-medium text-slate-300">Register</span>
+                      </button>
                     </div>
                   </div>
-                  <span className="text-[11px] px-2 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300">
-                    v1.0 · MERN + Socket.IO
-                  </span>
-                </div>
 
-                {/* Google */}
-                <div className="mb-5 flex justify-center">
-                  <GoogleLogin
-                    onSuccess={handleGoogleSuccess}
-                    onError={handleGoogleError}
-                    size="large"
-                    theme="outline"
-                    text="continue_with"
-                  />
-                </div>
-
-                {/* Divider */}
-                <div className="relative mb-5">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-slate-700" />
-                  </div>
-                  <div className="relative flex justify-center text-[11px] uppercase tracking-wide">
-                    <span className="px-2 bg-slate-950 text-slate-400">
-                      Or use email
-                    </span>
-                  </div>
-                </div>
-
-                {/* Login / Register tiles */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                  <motion.button
-                    whileHover={{ y: -4, scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => router.push('/login')}
-                    className="group text-left rounded-2xl border border-slate-700 bg-slate-900/80 p-4 hover:border-sky-400/70 hover:bg-slate-900 transition-all"
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-semibold text-slate-100">
-                        Login
-                      </span>
-                      <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-sky-300 group-hover:translate-x-0.5 transition-transform" />
-                    </div>
-                    <p className="text-[11px] text-slate-400">
-                      Already with us? Jump back into your chats.
-                    </p>
-                  </motion.button>
-
-                  <motion.button
-                    whileHover={{ y: -4, scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => router.push('/register')}
-                    className="group text-left rounded-2xl border border-slate-700 bg-slate-900/80 p-4 hover:border-violet-400/70 hover:bg-slate-900 transition-all"
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-semibold text-slate-100">
-                        Register
-                      </span>
-                      <Sparkles className="w-4 h-4 text-slate-500 group-hover:text-violet-300 transition-colors" />
-                    </div>
-                    <p className="text-[11px] text-slate-400">
-                      New here? Create an account with OTP verification.
-                    </p>
-                  </motion.button>
-                </div>
-
-                {/* Mini chat preview */}
-                <div className="mt-3 mb-2 rounded-2xl bg-slate-900/80 border border-slate-800 p-3 space-y-2">
-                  <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-violet-500 flex items-center justify-center text-xs font-semibold">
-                        D
+                  {/* Fake Chat Preview */}
+                  <div className="mt-8 pt-6 border-t border-slate-800/50">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="flex -space-x-2">
+                         <div className="w-8 h-8 rounded-full border-2 border-slate-900 bg-sky-500"></div>
+                         <div className="w-8 h-8 rounded-full border-2 border-slate-900 bg-violet-500"></div>
+                         <div className="w-8 h-8 rounded-full border-2 border-slate-900 bg-emerald-500"></div>
                       </div>
-                      <div className="text-xs">
-                        <p className="text-slate-100 font-medium">Dhruv</p>
-                        <p className="text-[10px] text-emerald-400 flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                          Online
-                        </p>
+                      <span className="text-xs text-slate-400 font-medium">1.2k+ users online</span>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <div className="flex items-end gap-2">
+                        <div className="w-6 h-6 rounded-full bg-indigo-500 flex-shrink-0"></div>
+                        <div className="px-3 py-2 bg-slate-800 rounded-2xl rounded-bl-none text-xs text-slate-200">
+                          Hey! Is the new update live? 🚀
+                        </div>
                       </div>
-                    </div>
-                    <span className="text-[10px] text-slate-500">Now</span>
-                  </div>
-
-                  <div className="space-y-1.5 text-[11px]">
-                    <div className="max-w-[80%] rounded-2xl bg-slate-800 px-3 py-1.5 text-slate-100">
-                      Welcome to your new chat playground 👋
-                    </div>
-                    <div className="flex justify-end">
-                      <div className="max-w-[80%] rounded-2xl bg-gradient-to-r from-sky-500 to-blue-500 px-3 py-1.5 text-slate-50 flex items-center gap-1.5">
-                        <span>Let&apos;s ship something crazy.</span>
-                        <CheckCircle2 className="w-3 h-3 text-emerald-200" />
+                      <div className="flex items-end gap-2 justify-end">
+                        <div className="px-3 py-2 bg-sky-600/20 text-sky-200 border border-sky-500/20 rounded-2xl rounded-br-none text-xs">
+                          Yes! Just deployed it. Check it out!
+                        </div>
+                        <div className="w-6 h-6 rounded-full bg-sky-500 flex-shrink-0"></div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Footer strip */}
-                <div className="flex items-center justify-between border-t border-slate-800 pt-3 mt-2">
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[11px] text-slate-400">
-                      Encrypted credentials · OTP-guarded signup
-                    </span>
-                  </div>
-                  <span className="text-[11px] text-slate-500">
-                    Built with MERN + Socket.IO
-                  </span>
                 </div>
               </div>
             </div>
           </motion.div>
-        </section>
+        </div>
+
+        {/* Features Stripes */}
+        <div id="features" className="mt-24 mb-32 relative">
+           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-full bg-slate-900/50 blur-3xl -z-10 rounded-full"></div>
+           <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4">Why users love PulseChat</h2>
+              <p className="text-slate-400 max-w-2xl mx-auto">Built for speed, designed for clarity. Everything you need to communicate effectively.</p>
+           </div>
+
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              { icon: ShieldCheck, title: "Secure by Default", desc: "End-to-end encrypted messaging via Socket.IO ensuring your conversations stay private.", color: "text-emerald-400" },
+              { icon: Zap, title: "Lightning Fast", desc: "Powered by WebSocket technology for sub-100ms latency real-time communication.", color: "text-amber-400" },
+              { icon: Sparkles, title: "Modern Design", desc: "A beautifully crafted glassmorphism UI with smooth 60fps animations.", color: "text-purple-400" },
+              { icon: Wifi, title: "Real-time Sync", desc: "Instant synchronization across all your devices. Never miss a message.", color: "text-sky-400" },
+              { icon: Users, title: "Group Chats", desc: "Create unlimited groups and collaborate with your team effortlessly.", color: "text-rose-400" },
+              { icon: CheckCircle2, title: "Read Receipts", desc: "Know exactly when your messages are delivered and read.", color: "text-blue-400" },
+            ].map((feature, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ y: -5 }}
+                className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800/50 backdrop-blur-sm hover:bg-slate-800/40 hover:border-slate-700/50 transition-all text-center md:text-left group"
+              >
+                <div className={`w-12 h-12 rounded-xl bg-slate-800/80 flex items-center justify-center mb-4 mx-auto md:mx-0 ${feature.color} group-hover:scale-110 transition-transform`}>
+                  <feature.icon size={24} />
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">{feature.title}</h3>
+                <p className="text-slate-400 text-sm">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* About Section */}
+        <div id="about" className="mb-32 max-w-4xl mx-auto relative">
+           <div className="absolute -right-20 top-0 w-72 h-72 bg-violet-600/10 blur-[100px] rounded-full"></div>
+           <div className="bg-slate-900/30 border border-slate-800/50 rounded-3xl p-8 md:p-12 backdrop-blur-md relative overflow-hidden">
+             <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
+               <div className="flex-1 space-y-6 text-center md:text-left">
+                  <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">About PulseChat</h2>
+                  <p className="text-slate-400 leading-relaxed">
+                    PulseChat started as a passion project to simplify real-time communication. 
+                    We believe messaging should be instantaneous, distraction-free, and beautiful.
+                  </p>
+                  <p className="text-slate-400 leading-relaxed">
+                    Built with the latest web technologies like Next.js, Socket.IO, and Tailwind CSS, 
+                    we push the boundaries of what's possible in the browser.
+                  </p>
+               </div>
+               <div className="flex-shrink-0">
+                  <div className="w-48 h-48 rounded-2xl bg-gradient-to-tr from-sky-500 to-violet-600 p-1 rotate-3 hover:rotate-0 transition-all duration-300">
+                     <div className="w-full h-full bg-slate-950 rounded-xl flex items-center justify-center overflow-hidden">
+                        <Users size={64} className="text-white/20" />
+                     </div>
+                  </div>
+               </div>
+             </div>
+           </div>
+        </div>
+
+        {/* Contact Section */}
+        <div id="contact" className="mb-24 max-w-3xl mx-auto text-center">
+           <h2 className="text-4xl font-bold mb-6">Get in touch</h2>
+           <p className="text-slate-400 mb-10">Have questions or feedback? I'd love to hear from you.</p>
+           
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+             <a href="mailto:hello@pulsechat.dev" className="p-4 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-sky-500/50 transition-colors flex items-center justify-center gap-3 group">
+               <div className="p-2 bg-sky-500/10 rounded-lg text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all">
+                 <MessageCircle size={20} />
+               </div>
+               <span className="font-medium text-slate-200">hello@pulsechat.dev</span>
+             </a>
+             <a href="https://twitter.com/pulsechat" target="_blank" rel="noopener noreferrer" className="p-4 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/50 transition-colors flex items-center justify-center gap-3 group">
+              <div className="p-2 bg-violet-500/10 rounded-lg text-violet-400 group-hover:bg-violet-500 group-hover:text-white transition-all">
+                 <Globe size={20} />
+               </div>
+               <span className="font-medium text-slate-200">@pulsechat_app</span>
+             </a>
+           </div>
+
+           <div className="mt-16 pt-8 border-t border-slate-800/50 text-slate-500 text-sm">
+              <p>&copy; {new Date().getFullYear()} PulseChat. All rights reserved.</p>
+              <div className="flex justify-center gap-4 mt-4">
+                <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+              </div>
+           </div>
+        </div>
       </main>
     </div>
   );
