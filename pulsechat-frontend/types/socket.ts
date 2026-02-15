@@ -13,6 +13,11 @@ export interface TypingPayload {
   username: string;
 }
 
+export interface UserStatusPayload {
+  userId: string;
+  isOnline: boolean;
+}
+
 export interface ServerToClientEvents {
   receive_message: (data: MessagePayload) => void;
   user_typing: (data: TypingPayload) => void;
@@ -20,6 +25,8 @@ export interface ServerToClientEvents {
   user_online: (userId: string) => void;
   user_offline: (userId: string) => void;
   message_read: (messageId: string) => void;
+  user_status_changed: (data: UserStatusPayload) => void;
+  online_users: (userIds: string[]) => void;
 }
 
 export interface ClientToServerEvents {
@@ -29,4 +36,5 @@ export interface ClientToServerEvents {
   typing: (data: TypingPayload) => void;
   stop_typing: (conversationId: string) => void;
   mark_as_read: (messageId: string) => void;
+  user_online: (userId: string) => void;
 }

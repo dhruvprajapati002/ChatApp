@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, ArrowLeft, CheckCircle, Clock, RefreshCw, AlertCircle } from 'lucide-react';
 import OtpInput from 'react-otp-input';
 
-export default function VerifyOTPPage() {
+function VerifyOTPContent() {
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -387,5 +387,26 @@ export default function VerifyOTPPage() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function VerifyOTPPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center text-slate-200"
+        >
+          <div className="relative mx-auto mb-6">
+            <div className="w-20 h-20 border-4 border-slate-800 border-t-sky-500 rounded-full animate-spin" />
+          </div>
+          <p className="text-lg font-medium">Loading verification page...</p>
+        </motion.div>
+      </div>
+    }>
+      <VerifyOTPContent />
+    </Suspense>
   );
 }
