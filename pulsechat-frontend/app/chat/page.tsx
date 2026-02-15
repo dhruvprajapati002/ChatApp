@@ -124,7 +124,6 @@ export default function ChatPage() {
     if (!socket) return;
 
     socket.on('online_users', (userIds: string[]) => {
-      console.log('🟢 Online users:', userIds);
       setOnlineUserIds(userIds);
 
       setUsers(prevUsers =>
@@ -136,8 +135,6 @@ export default function ChatPage() {
     });
 
     socket.on('user_status_changed', ({ userId, isOnline }: { userId: string; isOnline: boolean }) => {
-      console.log(`👤 User ${userId} is now ${isOnline ? 'online' : 'offline'}`);
-
       setOnlineUserIds(prev =>
         isOnline
           ? [...prev, userId]

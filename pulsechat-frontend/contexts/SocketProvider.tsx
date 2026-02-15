@@ -36,7 +36,6 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
     });
 
     newSocket.on('connect', () => {
-      console.log('✅ Socket connected');
       setIsConnected(true);
       
       // ✅ Announce user is online
@@ -44,7 +43,6 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
     });
 
     newSocket.on('disconnect', () => {
-      console.log('❌ Socket disconnected');
       setIsConnected(false);
     });
 

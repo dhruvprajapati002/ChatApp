@@ -43,8 +43,6 @@ export default function RegisterPage() {
         password: formData.password,
       });
 
-      console.log('✅ Registration successful:', data);
-
       // Redirect to OTP verification
       window.location.href = `/verify-otp?tempUserId=${data.tempUserId}&email=${encodeURIComponent(
         data.email
