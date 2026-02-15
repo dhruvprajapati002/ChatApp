@@ -224,7 +224,7 @@ export default function LoginPage() {
                         className="text-[11px] text-sky-400 hover:text-sky-300 font-medium"
                       >
                         Forgot?
-                      </Link>
+                      </Link>^^
                     </div>
                     <div className="relative">
                       <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
