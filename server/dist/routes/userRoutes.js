@@ -1,5 +1,5 @@
 import express from 'express';
-import { getMe, getAllUsers, updateOnlineStatus } from '../controllers/userController';
+import { getMe, getAllUsers, updateOnlineStatus } from '../controllers/userController.js';
 import { authMiddleware } from '../middleware/auth.js';
 const router = express.Router();
 // All routes are protected
