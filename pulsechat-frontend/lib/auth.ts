@@ -3,6 +3,8 @@ import { User } from '@/types/user';
 export const setAuth = (token: string, user: User) => {
   localStorage.setItem('token', token);
   localStorage.setItem('user', JSON.stringify(user));
+  // Notify SocketProvider in the same tab (storage event only fires in OTHER tabs)
+  window.dispatchEvent(new CustomEvent('auth-changed', { detail: { user } }));
 };
 
 export const getStoredUser = (): User | null => {
@@ -25,6 +27,8 @@ export const getStoredToken = (): string | null => {
 export const clearAuth = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
+  // Notify SocketProvider in the same tab
+  window.dispatchEvent(new CustomEvent('auth-changed', { detail: { user: null } }));
 };
 
 export const isAuthenticated = (): boolean => {
