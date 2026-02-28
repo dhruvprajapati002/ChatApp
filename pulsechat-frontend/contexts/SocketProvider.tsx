@@ -30,6 +30,7 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
     
     const newSocket = io(socketUrl, {
       transports: ['websocket', 'polling'],
+      withCredentials: true,
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
