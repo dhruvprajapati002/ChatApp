@@ -1,14 +1,22 @@
 import { Server } from 'socket.io';
 import Message from '../models/Message.js';
 import User from '../models/User.js';
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+    process.env.BACKEND_URL,
+    "http://localhost:3000"
+].filter((origin) => Boolean(origin));
 // Store online users in memory
 const onlineUsers = new Map(); // userId -> socketId
 export const initializeSocket = (httpServer) => {
     const io = new Server(httpServer, {
         cors: {
-            origin: process.env.CLIENT_URL,
+            origin: allowedOrigins,
+            methods: ["GET", "POST"],
             credentials: true
-        }
+        },
+        transports: ["websocket", "polling"],
+        allowEIO3: true
     });
     io.on('connection', (socket) => {
         console.log('✅ User connected:', socket.id);

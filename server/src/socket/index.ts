@@ -4,15 +4,24 @@ import { ClientToServerEvents, ServerToClientEvents, MessagePayload, TypingPaylo
 import Message from '../models/Message.js';
 import User from '../models/User.js';
 
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  process.env.BACKEND_URL,
+  "http://localhost:3000"
+].filter((origin): origin is string => Boolean(origin));
+
 // Store online users in memory
 const onlineUsers = new Map<string, string>(); // userId -> socketId
 
 export const initializeSocket = (httpServer: HTTPServer) => {
   const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
     cors: {
-      origin: process.env.CLIENT_URL,
+      origin: allowedOrigins,
+      methods: ["GET", "POST"],
       credentials: true
-    }
+    },
+    transports: ["websocket", "polling"],
+    allowEIO3: true
   });
 
   io.on('connection', (socket: Socket) => {
@@ -22,12 +31,12 @@ export const initializeSocket = (httpServer: HTTPServer) => {
     socket.on('user_online', async (userId: string) => {
       try {
         console.log('👤 User came online:', userId);
-        
+
         // Store user's socket ID
         onlineUsers.set(userId, socket.id);
-        
+
         // Update database
-        await User.findByIdAndUpdate(userId, { 
+        await User.findByIdAndUpdate(userId, {
           isOnline: true,
           lastSeen: new Date()
         });
@@ -97,7 +106,7 @@ export const initializeSocket = (httpServer: HTTPServer) => {
 
       // Find which user disconnected
       let disconnectedUserId: string | null = null;
-      
+
       for (const [userId, socketId] of onlineUsers.entries()) {
         if (socketId === socket.id) {
           disconnectedUserId = userId;
