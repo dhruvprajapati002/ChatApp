@@ -125,6 +125,13 @@ export const verifyOTP = async (req: Request, res: Response): Promise<void> => {
       expiresIn: '7d',
     });
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     res.json({
       success: true,
       message: 'Email verified successfully!',
@@ -198,7 +205,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     // Check if verified
     if (!user.isVerified) {
-      res.status(403).json({ 
+      res.status(403).json({
         message: 'Please verify your email first. Please register again.',
       });
       return;
@@ -212,6 +219,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
       expiresIn: '7d',
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.json({
@@ -231,6 +245,11 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const logout = async (req: Request, res: Response): Promise<void> => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
   res.json({ message: 'Logged out successfully' });
 };
 
@@ -275,6 +294,13 @@ export const googleAuth = async (req: Request, res: Response): Promise<void> => 
     // Generate JWT
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
       expiresIn: '7d',
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.json({

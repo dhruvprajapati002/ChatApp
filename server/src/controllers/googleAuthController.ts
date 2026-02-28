@@ -15,9 +15,9 @@ export const googleAuth = async (req: Request, res: Response): Promise<void> => 
 
     // Validate credential
     if (!credential) {
-      res.status(400).json({ 
+      res.status(400).json({
         message: 'No credential provided',
-        code: 'NO_CREDENTIAL' 
+        code: 'NO_CREDENTIAL'
       });
       return;
     }
@@ -29,11 +29,11 @@ export const googleAuth = async (req: Request, res: Response): Promise<void> => 
     });
 
     const payload = ticket.getPayload();
-    
+
     if (!payload || !payload.email) {
-      res.status(400).json({ 
+      res.status(400).json({
         message: 'Invalid Google token',
-        code: 'INVALID_TOKEN' 
+        code: 'INVALID_TOKEN'
       });
       return;
     }
@@ -55,27 +55,27 @@ export const googleAuth = async (req: Request, res: Response): Promise<void> => 
         avatar: picture,
         isOnline: true,
       });
-      
+
       console.log('✅ New user created via Google:', email);
     } else {
       // Update existing user online status and avatar
       user = await User.findByIdAndUpdate(
-        user._id, 
-        { 
+        user._id,
+        {
           isOnline: true,
           avatar: picture || user.avatar,
           lastSeen: new Date()
         },
         { new: true } // Return updated document
       );
-      
+
       console.log('✅ Existing user logged in via Google:', email);
     }
 
     if (!user) {
-      res.status(500).json({ 
+      res.status(500).json({
         message: 'Failed to create or update user',
-        code: 'USER_ERROR' 
+        code: 'USER_ERROR'
       });
       return;
     }
@@ -90,8 +90,8 @@ export const googleAuth = async (req: Request, res: Response): Promise<void> => 
     // Set httpOnly cookie
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: true,
+      sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -109,26 +109,26 @@ export const googleAuth = async (req: Request, res: Response): Promise<void> => 
     });
   } catch (error: any) {
     console.error('❌ Google auth error:', error);
-    
+
     // Handle specific Google API errors
     if (error.message?.includes('Token used too late')) {
-      res.status(401).json({ 
+      res.status(401).json({
         message: 'Token expired. Please try again.',
-        code: 'TOKEN_EXPIRED' 
+        code: 'TOKEN_EXPIRED'
       });
       return;
     }
 
     if (error.message?.includes('Invalid token')) {
-      res.status(401).json({ 
+      res.status(401).json({
         message: 'Invalid Google token',
-        code: 'INVALID_TOKEN' 
+        code: 'INVALID_TOKEN'
       });
       return;
     }
 
     // Generic error
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Google authentication failed. Please try again.',
       code: 'AUTH_FAILED',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
