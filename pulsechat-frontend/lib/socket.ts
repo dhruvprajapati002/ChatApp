@@ -7,13 +7,11 @@ class SocketClient {
   static getInstance(): Socket<ServerToClientEvents, ClientToServerEvents> {
     if (!this.instance) {
       this.instance = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
-        transports: ["websocket", "polling"],
-  withCredentials: true,
-  secure: true,
-  reconnection: true,
-  reconnectionAttempts: 5,
-  reconnectionDelay: 1000,
-
+        transports: ["polling", "websocket"],  // polling first = reliable handshake, then upgrades to WS
+        withCredentials: true,
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000,
       });
     }
     return this.instance;

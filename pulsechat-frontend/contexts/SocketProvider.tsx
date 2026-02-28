@@ -29,7 +29,7 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
     const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000';
     
     const newSocket = io(socketUrl, {
-      transports: ['websocket', 'polling'],
+      transports: ['polling', 'websocket'],  // polling first = standard handshake, then upgrades to WS
       withCredentials: true,
       reconnection: true,
       reconnectionAttempts: 5,
