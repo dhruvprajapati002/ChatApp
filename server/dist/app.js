@@ -7,8 +7,20 @@ import userRoutes from './routes/userRoutes.js';
 import messageRoutes from './routes/messageRoutes.js'; // NEW
 dotenv.config();
 const app = express();
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+    process.env.BACKEND_URL,
+    "http://localhost:3000"
+];
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error("CORS not allowed"));
+        }
+    },
     credentials: true
 }));
 app.use(express.json());

@@ -106,6 +106,12 @@ export const verifyOTP = async (req, res) => {
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
             expiresIn: '7d',
         });
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
         res.json({
             success: true,
             message: 'Email verified successfully!',
@@ -183,6 +189,12 @@ export const login = async (req, res) => {
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
             expiresIn: '7d',
         });
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
         res.json({
             token,
             user: {
@@ -200,6 +212,11 @@ export const login = async (req, res) => {
     }
 };
 export const logout = async (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+    });
     res.json({ message: 'Logged out successfully' });
 };
 // Google OAuth
@@ -238,6 +255,12 @@ export const googleAuth = async (req, res) => {
         // Generate JWT
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
             expiresIn: '7d',
+        });
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
         });
         res.json({
             token,
