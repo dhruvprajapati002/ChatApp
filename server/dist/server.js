@@ -23,5 +23,6 @@ initializeSocket(httpServer);
 connectDB().then(() => {
     httpServer.listen(PORT, () => {
         console.log(`🚀 Server running on port ${PORT}`);
+        console.log("CI/CD working 🚀");
     });
 });
