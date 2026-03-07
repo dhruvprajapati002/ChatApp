@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback } from 'react';
 import { useSocketContext } from '@/contexts/SocketProvider';
-import { MessagePayload, TypingPayload } from '@/types/socket';
+import { MessagePayload, TypingPayload, MessageReactionPayload, MessageStatusPayload } from '@/types/socket';
 
 export const useSocket = () => {
   const { socket, isConnected } = useSocketContext();
@@ -31,8 +31,20 @@ export const useSocket = () => {
     }
   }, [socket, isConnected]);
 
+  const addReaction = useCallback((data: MessageReactionPayload) => {
+    if (socket && isConnected) {
+      socket.emit('message_reaction', data);
+    }
+  }, [socket, isConnected]);
+
+  const markMessagesRead = useCallback((data: { conversationId: string, receiverId: string }) => {
+    if (socket && isConnected) {
+      socket.emit('mark_messages_read', data);
+    }
+  }, [socket, isConnected]);
+
   const onReceiveMessage = useCallback((callback: (data: MessagePayload) => void) => {
-    if (!socket) return () => {};
+    if (!socket) return () => { };
     socket.on('receive_message', callback);
     return () => {
       socket.off('receive_message', callback);
@@ -40,10 +52,26 @@ export const useSocket = () => {
   }, [socket]);
 
   const onUserTyping = useCallback((callback: (data: TypingPayload) => void) => {
-    if (!socket) return () => {};
+    if (!socket) return () => { };
     socket.on('user_typing', callback);
     return () => {
       socket.off('user_typing', callback);
+    };
+  }, [socket]);
+
+  const onMessageReaction = useCallback((callback: (data: MessageReactionPayload) => void) => {
+    if (!socket) return () => { };
+    socket.on('message_reaction', callback);
+    return () => {
+      socket.off('message_reaction', callback);
+    };
+  }, [socket]);
+
+  const onMessagesStatusUpdate = useCallback((callback: (data: MessageStatusPayload) => void) => {
+    if (!socket) return () => { };
+    socket.on('messages_status_update', callback);
+    return () => {
+      socket.off('messages_status_update', callback);
     };
   }, [socket]);
 
@@ -54,7 +82,11 @@ export const useSocket = () => {
     sendMessage,
     startTyping,
     stopTyping,
+    addReaction,
+    markMessagesRead,
     onReceiveMessage,
     onUserTyping,
+    onMessageReaction,
+    onMessagesStatusUpdate,
   };
 };

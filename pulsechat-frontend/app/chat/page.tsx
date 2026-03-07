@@ -31,7 +31,7 @@ export default function ChatPage() {
   const typingTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const router = useRouter();
   
-  const { isConnected, joinRoom, sendMessage, startTyping, onReceiveMessage, onUserTyping, socket } = useSocket();
+  const { isConnected, joinRoom, sendMessage, startTyping, onReceiveMessage, onUserTyping, onMessageReaction, onMessagesStatusUpdate, addReaction, markMessagesRead, socket } = useSocket();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -87,6 +87,7 @@ export default function ChatPage() {
       fetchMessages(selectedUser.id);
       const conversationId = [currentUser.id, selectedUser.id].sort().join('_');
       joinRoom(conversationId);
+      markMessagesRead({ conversationId, receiverId: currentUser.id });
     }
   }, [selectedUser?.id, currentUser?.id]);
 
@@ -106,6 +107,11 @@ export default function ChatPage() {
     const cleanupReceive = onReceiveMessage((data: MessagePayload) => {
       if (data.senderId !== currentUser.id) {
         setMessages(prev => [...prev, data]);
+        
+        // If the message is from the user we are currently chatting with, mark it as read immediately
+        if (data.senderId === selectedUser.id) {
+          markMessagesRead({ conversationId: data.conversationId, receiverId: currentUser.id! });
+        }
       }
     });
 
@@ -117,11 +123,40 @@ export default function ChatPage() {
       }
     });
 
+    const cleanupReaction = onMessageReaction((data) => {
+      setMessages(prev => prev.map(msg => {
+        // Fallback to timestamp if _id is not yet available (for very new unrefreshed messages)
+        const msgId = msg._id || msg.timestamp.toString();
+        if (msgId === data.messageId) {
+          const reactions = msg.reactions || [];
+          const newReactions = reactions.filter(r => r.userId !== data.userId);
+          newReactions.push({ emoji: data.emoji, userId: data.userId });
+          return { ...msg, reactions: newReactions };
+        }
+        return msg;
+      }));
+    });
+
+    const cleanupStatusUpdate = onMessagesStatusUpdate((data) => {
+      setMessages(prev => prev.map(msg => {
+        // Only update messages we SENT, where the status is upgrading
+        if (msg.senderId === currentUser.id && msg.receiverId === data.receiverId) {
+          // Upgrade sent -> delivered -> read (but don't downgrade read to delivered)
+          if (data.status === 'read' || (data.status === 'delivered' && msg.status === 'sent')) {
+            return { ...msg, status: data.status };
+          }
+        }
+        return msg;
+      }));
+    });
+
     return () => {
       cleanupReceive();
       cleanupTyping();
+      cleanupReaction();
+      cleanupStatusUpdate();
     };
-  }, [currentUser?.id, selectedUser?.id, onReceiveMessage, onUserTyping]);
+  }, [currentUser?.id, selectedUser?.id, onReceiveMessage, onUserTyping, onMessageReaction, onMessagesStatusUpdate, markMessagesRead]);
 
   useEffect(() => {
     if (!socket) return;
@@ -166,8 +201,8 @@ export default function ChatPage() {
 
     const messageData: MessagePayload = {
       conversationId: [currentUser.id, selectedUser.id].sort().join('_'),
-      senderId: currentUser.id,
-      receiverId: selectedUser.id,
+      senderId: currentUser.id!,
+      receiverId: selectedUser.id!,
       message,
       timestamp: new Date()
     };
@@ -181,10 +216,33 @@ export default function ChatPage() {
 
     startTyping({
       conversationId: [currentUser.id, selectedUser.id].sort().join('_'),
-      userId: currentUser.id,
+      userId: currentUser.id!,
       username: currentUser.username
     });
   }, [currentUser, selectedUser, startTyping]);
+
+  const handleAddReaction = useCallback((messageId: string, emoji: string) => {
+    if (!currentUser?.id || !selectedUser?.id) return;
+    
+    addReaction({
+      messageId,
+      conversationId: [currentUser.id, selectedUser.id].sort().join('_'),
+      emoji,
+      userId: currentUser.id!
+    });
+    
+    // Optimistic UI update
+    setMessages(prev => prev.map(msg => {
+      const msgId = msg._id || msg.timestamp.toString();
+      if (msgId === messageId) {
+        const reactions = msg.reactions || [];
+        const newReactions = reactions.filter(r => r.userId !== currentUser.id);
+        newReactions.push({ emoji, userId: currentUser.id! });
+        return { ...msg, reactions: newReactions };
+      }
+      return msg;
+    }));
+  }, [currentUser?.id, selectedUser?.id, addReaction]);
 
   const handleLogout = async () => {
     try {
@@ -199,11 +257,11 @@ export default function ChatPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+      <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center text-slate-200"
+          className="text-center text-slate-700 dark:text-slate-200"
         >
           <div className="relative mx-auto mb-6">
             <div className="w-20 h-20 border-4 border-slate-800 border-t-sky-500 rounded-full animate-spin" />
@@ -217,15 +275,15 @@ export default function ChatPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-200">
+      <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center p-8 bg-slate-900/90 rounded-3xl shadow-2xl border border-red-500/40 max-w-md backdrop-blur-xl"
+          className="text-center p-8 bg-white/90 dark:bg-slate-900/90 rounded-3xl shadow-2xl border border-red-500/40 max-w-md backdrop-blur-xl"
         >
           <div className="text-red-400 text-5xl mb-6 mx-auto">⚠️</div>
-          <h2 className="text-2xl font-bold text-slate-100 mb-4">Something went wrong</h2>
-          <p className="text-slate-400 mb-8 text-sm">{error}</p>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Something went wrong</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-8 text-sm">{error}</p>
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -242,7 +300,7 @@ export default function ChatPage() {
   if (!currentUser) return null;
 
   return (
-    <div className="h-screen flex bg-slate-950 text-white overflow-hidden">
+    <div className="h-screen flex bg-background text-foreground overflow-hidden">
       {/* Background Effect */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-violet-600/10 blur-[120px] rounded-full" />
@@ -258,27 +316,27 @@ export default function ChatPage() {
         className={`${selectedUser ? 'hidden lg:flex' : 'flex'} lg:w-[380px] w-full flex-col z-10`}
       >
         {/* Sidebar Header */}
-        <div className="p-4 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/60 border-r border-slate-800/60 flex items-center justify-between shrink-0">
+        <div className="p-4 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 border-r dark:border-r-slate-800/60 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
              <Logo size="sm" className="shadow-none ring-0 w-8 h-8 rounded-lg" />
-             <span className="font-bold text-lg text-white tracking-tight">PulseChat</span>
+             <span className="font-bold text-lg text-slate-900 dark:text-white tracking-tight">PulseChat</span>
           </div>
           
           <div className="flex items-center gap-3">
              <div className="relative group">
                 {currentUser.avatar ? (
-                  <img src={currentUser.avatar} alt="Me" className="w-8 h-8 rounded-full object-cover ring-2 ring-slate-800 group-hover:ring-sky-500/50 transition-all" />
+                  <img src={currentUser.avatar} alt="Me" className="w-8 h-8 rounded-full object-cover ring-2 ring-slate-200 dark:ring-slate-800 group-hover:ring-sky-500/50 transition-all" />
                 ) : (
-                  <div className="w-8 h-8 bg-slate-800 rounded-full flex items-center justify-center font-bold text-xs text-slate-300 ring-2 ring-slate-800 group-hover:bg-slate-700 transition-all">
+                  <div className="w-8 h-8 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center font-bold text-xs text-slate-600 dark:text-slate-300 ring-2 ring-slate-200 dark:ring-slate-800 hover:bg-slate-300 dark:group-hover:bg-slate-700 transition-all">
                     {currentUser.username.charAt(0).toUpperCase()}
                   </div>
                 )}
-                <div className={`absolute bottom-0 right-0 w-2.5 h-2.5 border-2 border-slate-900 rounded-full ${isConnected ? 'bg-emerald-500' : 'bg-red-500'}`}></div>
+                <div className={`absolute bottom-0 right-0 w-2.5 h-2.5 border-2 border-white dark:border-slate-900 rounded-full ${isConnected ? 'bg-emerald-500' : 'bg-red-500'}`}></div>
              </div>
              
              <button 
                 onClick={handleLogout}
-                className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-all"
+                className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all"
                 title="Logout"
               >
                 <LogOut size={18} />
@@ -297,7 +355,7 @@ export default function ChatPage() {
       </motion.div>
 
       {/* Chat Area */}
-      <div className={`${selectedUser ? 'flex' : 'hidden lg:flex'} flex-1 flex-col bg-slate-900/40 backdrop-blur-xl relative z-10`}>
+      <div className={`${selectedUser ? 'flex' : 'hidden lg:flex'} flex-1 flex-col bg-slate-50/40 dark:bg-slate-900/40 backdrop-blur-xl relative z-10`}>
         <AnimatePresence mode="wait">
           {selectedUser ? (
             <motion.div
@@ -322,10 +380,10 @@ export default function ChatPage() {
                         animate={{ opacity: 1, y: 0 }}
                         className="flex-1 flex flex-col items-center justify-center py-20 opacity-50"
                       >
-                         <div className="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center mb-4">
-                            <MessageSquare className="text-slate-600" size={32} />
+                         <div className="w-20 h-20 bg-slate-200/50 dark:bg-slate-800/50 rounded-full flex items-center justify-center mb-4">
+                            <MessageSquare className="text-slate-400 dark:text-slate-600" size={32} />
                          </div>
-                         <p className="text-slate-400 font-medium">No messages yet</p>
+                         <p className="text-slate-500 dark:text-slate-400 font-medium">No messages yet</p>
                       </motion.div>
                     ) : (
                       messages.map((msg, idx) => (
@@ -334,6 +392,7 @@ export default function ChatPage() {
                           <MessageBubble
                             message={msg}
                             isOwn={msg.senderId === currentUser.id}
+                            onAddReaction={handleAddReaction}
                           />
                         </div>
                       ))
@@ -359,11 +418,11 @@ export default function ChatPage() {
               className="flex-1 flex items-center justify-center"
             >
               <div className="text-center p-8">
-                <div className="w-24 h-24 bg-gradient-to-tr from-sky-500/20 to-violet-500/20 rounded-3xl flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-white/5">
-                   <MessageSquare className="text-sky-400" size={40} />
+                <div className="w-24 h-24 bg-gradient-to-tr from-sky-500/20 to-violet-500/20 rounded-3xl flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-slate-200/50 dark:border-white/5">
+                   <MessageSquare className="text-sky-500 dark:text-sky-400" size={40} />
                 </div>
-                <h2 className="text-3xl font-bold text-white mb-3">PulseChat</h2>
-                <p className="text-slate-400 max-w-sm mx-auto">
+                <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">PulseChat</h2>
+                <p className="text-slate-600 dark:text-slate-400 max-w-sm mx-auto">
                   Select a context to start messaging or create a new group to collaborate with your team.
                 </p>
               </div>

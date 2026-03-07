@@ -1,10 +1,25 @@
 export interface MessagePayload {
+  _id?: string;
   conversationId: string;
   senderId: string;
   receiverId: string;
   message: string;
   timestamp: Date | string;  // ✅ Can be Date or ISO string
   status?: 'sent' | 'delivered' | 'read';  // ✅ Optional status
+  reactions?: { emoji: string; userId: string }[];
+}
+
+export interface MessageReactionPayload {
+  messageId: string;
+  conversationId: string;
+  emoji: string;
+  userId: string;
+}
+
+export interface MessageStatusPayload {
+  conversationId: string;
+  receiverId: string;
+  status: 'delivered' | 'read';
 }
 
 export interface TypingPayload {
@@ -27,6 +42,8 @@ export interface ServerToClientEvents {
   message_read: (messageId: string) => void;
   user_status_changed: (data: UserStatusPayload) => void;
   online_users: (userIds: string[]) => void;
+  message_reaction: (data: MessageReactionPayload) => void;
+  messages_status_update: (data: MessageStatusPayload) => void;
 }
 
 export interface ClientToServerEvents {
@@ -36,5 +53,7 @@ export interface ClientToServerEvents {
   typing: (data: TypingPayload) => void;
   stop_typing: (conversationId: string) => void;
   mark_as_read: (messageId: string) => void;
+  mark_messages_read: (data: { conversationId: string, receiverId: string }) => void;
   user_online: (userId: string) => void;
+  message_reaction: (data: MessageReactionPayload) => void;
 }

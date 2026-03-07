@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #020617; /* slate-950 */
-  --foreground: #f8fafc; /* slate-50 */
+  --background: #f8fafc;
+  /* slate-50 */
+  --foreground: #020617;
+  /* slate-950 */
+}
+
+.dark {
+  --background: #020617;
+  /* slate-950 */
+  --foreground: #f8fafc;
+  /* slate-50 */
 }
 
 @theme inline {
@@ -27,12 +36,14 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #334155; /* slate-700 */
+  background: #334155;
+  /* slate-700 */
   border-radius: 9999px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #475569; /* slate-600 */
+  background: #475569;
+  /* slate-600 */
 }
 
 /* OTP Input Custom Styles */
@@ -48,31 +59,33 @@ body {
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
-  background-color: #1e293b; /* slate-800 */
-  color: #f8fafc; /* slate-50 */
-  border: 2px solid #334155; /* slate-700 */
   border-radius: 0.75rem;
   transition: all 0.2s;
 }
 
 .otp-input:focus {
-  border-color: #38bdf8; /* sky-400 */
   outline: none;
   box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
-  background-color: #0f172a; /* slate-900 */
 }
 
 .otp-input:disabled {
-  background-color: #334155; /* slate-700 */
   cursor: not-allowed;
   opacity: 0.5;
 }
 
 /* Animation Utilities */
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 .animate-float {
@@ -80,8 +93,15 @@ body {
 }
 
 @keyframes pulse-ring {
-  0% { transform: scale(0.8); opacity: 0.5; }
-  100% { transform: scale(2); opacity: 0; }
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
 }
 
 .animate-pulse-ring {

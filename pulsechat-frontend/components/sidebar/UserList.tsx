@@ -37,16 +37,16 @@ export default function UserList({ users, selectedUserId, onSelectUser }: UserLi
   }, [users]);
 
   return (
-    <div className="flex flex-col h-full bg-slate-950/50 backdrop-blur-xl border-r border-slate-800/50">
+    <div className="flex flex-col h-full bg-slate-50/50 dark:bg-slate-950/50 backdrop-blur-xl border-r border-slate-200 dark:border-slate-800/50">
       {/* Sidebar Header */}
       <div className="px-6 pt-6 pb-4 space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-            <Users className="w-5 h-5 text-sky-400" />
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <Users className="w-5 h-5 text-sky-500 dark:text-sky-400" />
             Contacts
           </h2>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-1 rounded-full bg-slate-800/80 border border-slate-700/50 text-xs font-medium text-slate-400">
+            <span className="px-2.5 py-1 rounded-full bg-slate-200 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700/50 text-xs font-medium text-slate-600 dark:text-slate-400">
               {users.length}
             </span>
             <button className="p-2 rounded-xl bg-sky-500/10 text-sky-400 hover:bg-sky-500/20 transition-colors">
@@ -58,11 +58,11 @@ export default function UserList({ users, selectedUserId, onSelectUser }: UserLi
         {/* Search */}
         <div className="relative group">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-4 w-4 text-slate-500 group-focus-within:text-sky-400 transition-colors" />
+            <Search className="h-4 w-4 text-slate-400 dark:text-slate-500 group-focus-within:text-sky-500 dark:group-focus-within:text-sky-400 transition-colors" />
           </div>
           <input
             type="text"
-            className="block w-full pl-10 pr-3 py-2.5 bg-slate-900/50 border border-slate-800 rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500/50 transition-all shadow-sm"
+            className="block w-full pl-10 pr-3 py-2.5 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500/50 transition-all shadow-sm"
             placeholder="Search conversations..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -70,17 +70,17 @@ export default function UserList({ users, selectedUserId, onSelectUser }: UserLi
         </div>
         
         {/* Online Status Tab */}
-        <div className="flex items-center gap-4 text-xs font-medium text-slate-500 border-b border-slate-800/50 pb-1">
-          <button className="text-sky-400 border-b-2 border-sky-400 pb-2 -mb-1.5 transition-colors">
+        <div className="flex items-center gap-4 text-xs font-medium text-slate-500 border-b border-slate-200 dark:border-slate-800/50 pb-1">
+          <button className="text-sky-600 dark:text-sky-400 border-b-2 border-sky-500 dark:border-sky-400 pb-2 -mb-1.5 transition-colors">
             All Chats
           </button>
-          <button className="hover:text-slate-300 pb-2 transition-colors flex items-center gap-1.5">
+          <button className="hover:text-slate-800 dark:hover:text-slate-300 pb-2 transition-colors flex items-center gap-1.5">
             Online
             {onlineCount > 0 && (
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             )}
           </button>
-          <button className="hover:text-slate-300 pb-2 transition-colors">
+          <button className="hover:text-slate-800 dark:hover:text-slate-300 pb-2 transition-colors">
             Groups
           </button>
         </div>
@@ -96,10 +96,10 @@ export default function UserList({ users, selectedUserId, onSelectUser }: UserLi
               exit={{ opacity: 0, scale: 0.95 }}
               className="flex flex-col items-center justify-center py-12 text-center"
             >
-              <div className="w-16 h-16 rounded-2xl bg-slate-900/50 flex items-center justify-center mb-4">
-                <Search className="w-8 h-8 text-slate-700" />
+              <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-900/50 flex items-center justify-center mb-4">
+                <Search className="w-8 h-8 text-slate-400 dark:text-slate-700" />
               </div>
-              <p className="text-slate-400 font-medium">No results found</p>
+              <p className="text-slate-600 dark:text-slate-400 font-medium">No results found</p>
               <p className="text-xs text-slate-500 mt-1">
                 We couldn&apos;t find any users matching &quot;{searchQuery}&quot;
               </p>

@@ -14,7 +14,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-semibold text-slate-200 mb-2.5 tracking-wide">
+          <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-2.5 tracking-wide">
             {label}
           </label>
         )}
@@ -28,15 +28,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             whileFocus={{ scale: 1.02 }}
             className={`
-              w-full px-4 py-4 text-slate-100
+              w-full px-4 py-4 text-slate-900 dark:text-slate-100
               ${icon ? 'pl-12' : 'pl-4'} pr-4
-              bg-slate-900/80 border-2 rounded-3xl backdrop-blur-xl shadow-lg hover:shadow-xl hover:shadow-slate-500/20
+              bg-white/80 dark:bg-slate-900/80 border-2 rounded-3xl backdrop-blur-xl shadow-lg hover:shadow-xl hover:shadow-slate-500/10 dark:hover:shadow-slate-500/20
               transition-all duration-200
-              placeholder:text-slate-500 text-sm font-medium
-              disabled:bg-slate-900/50 disabled:text-slate-600 disabled:cursor-not-allowed
+              placeholder:text-slate-400 dark:placeholder:text-slate-500 text-sm font-medium
+              disabled:bg-slate-100 dark:disabled:bg-slate-900/50 disabled:text-slate-400 dark:disabled:text-slate-600 disabled:cursor-not-allowed
               ${error 
-                ? 'border-red-500/60 focus:border-red-400 focus:ring-red-500/30 ring-1 ring-red-500/20 shadow-red-500/20' 
-                : 'border-slate-700/50 focus:border-sky-400 focus:ring-sky-500/30 ring-1 ring-transparent hover:border-slate-600/70'
+                ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/30 ring-1 ring-red-500/20 shadow-red-500/10 dark:shadow-red-500/20' 
+                : 'border-slate-200 dark:border-slate-700/50 focus:border-sky-500 dark:focus:border-sky-400 focus:ring-sky-500/30 ring-1 ring-transparent hover:border-slate-300 dark:hover:border-slate-600/70'
               }
               ${className}
             `}

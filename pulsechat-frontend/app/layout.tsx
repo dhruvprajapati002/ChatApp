@@ -4,6 +4,7 @@ import './globals.css';
 import SocketProvider from '@/contexts/SocketProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Script from 'next/script';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,8 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} antialiased`}>
         {/* Suppress COOP warnings in development */}
         {process.env.NODE_ENV === 'development' && (
           <Script id="suppress-coop-warnings">
@@ -39,7 +40,14 @@ export default function RootLayout({
         )}
         
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
-          <SocketProvider>{children}</SocketProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SocketProvider>{children}</SocketProvider>
+          </ThemeProvider>
         </GoogleOAuthProvider>
       </body>
     </html>

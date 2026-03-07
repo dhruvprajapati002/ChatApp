@@ -45,7 +45,7 @@ export default function MessageInput({ onSendMessage, onTyping, disabled }: Mess
       <div className="max-w-4xl mx-auto relative">
         <motion.div 
           layout
-          className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-[2rem] p-2 flex items-end shadow-2xl ring-1 ring-white/5"
+          className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-slate-700/50 rounded-[2rem] p-2 flex items-end shadow-2xl ring-1 ring-slate-200 dark:ring-white/5"
         >
           {/* Attachments */}
           <div className="flex items-center gap-1 pb-1 pl-1">
@@ -53,7 +53,7 @@ export default function MessageInput({ onSendMessage, onTyping, disabled }: Mess
               whileHover={{ scale: 1.1, backgroundColor: "rgba(56, 189, 248, 0.1)" }}
               whileTap={{ scale: 0.9 }}
               disabled={disabled}
-              className="p-2.5 text-slate-400 hover:text-sky-400 rounded-full transition-colors"
+              className="p-2.5 text-slate-500 dark:text-slate-400 hover:text-sky-500 dark:hover:text-sky-400 rounded-full transition-colors"
             >
               <Paperclip size={20} className="stroke-[1.5]" />
             </motion.button>
@@ -69,7 +69,7 @@ export default function MessageInput({ onSendMessage, onTyping, disabled }: Mess
               placeholder={disabled ? "Connecting..." : "Message..."}
               disabled={disabled}
               rows={1}
-              className="w-full bg-transparent border-none focus:ring-0 resize-none text-slate-200 placeholder:text-slate-500 max-h-[120px] py-1 px-2 custom-scrollbar text-[15px] leading-relaxed"
+              className="w-full bg-transparent border-none focus:ring-0 resize-none text-slate-900 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 max-h-[120px] py-1 px-2 custom-scrollbar text-[15px] leading-relaxed"
             />
           </div>
 
@@ -79,7 +79,7 @@ export default function MessageInput({ onSendMessage, onTyping, disabled }: Mess
               whileHover={{ scale: 1.1, backgroundColor: "rgba(167, 139, 250, 0.1)" }}
               whileTap={{ scale: 0.9 }}
               disabled={disabled}
-              className="p-2.5 text-slate-400 hover:text-violet-400 rounded-full transition-colors hidden sm:block"
+              className="p-2.5 text-slate-500 dark:text-slate-400 hover:text-violet-500 dark:hover:text-violet-400 rounded-full transition-colors hidden sm:block"
             >
               <Smile size={20} className="stroke-[1.5]" />
             </motion.button>

@@ -86,7 +86,7 @@ export default function RegisterPage() {
   const passwordStrength = getPasswordStrength();
 
   return (
-  <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white relative overflow-hidden">
+  <div className="min-h-screen flex items-center justify-center bg-background text-foreground relative overflow-hidden">
     {/* Background glows */}
     <div className="pointer-events-none fixed inset-0">
       <div className="absolute -top-40 -left-40 w-80 h-80 bg-violet-600/30 blur-3xl rounded-full" />
@@ -114,15 +114,15 @@ export default function RegisterPage() {
         {/* Glow border */}
         <div className="absolute -inset-0.5 bg-gradient-to-br from-sky-500 via-blue-500 to-violet-500 rounded-3xl opacity-70 blur-xl" />
 
-        <div className="relative bg-slate-950/90 border border-slate-800 rounded-3xl shadow-2xl backdrop-blur-xl p-6 md:p-7">
+        <div className="relative bg-white/90 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl backdrop-blur-xl p-6 md:p-7">
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
             {/* LEFT: Info / Highlights */}
             <div className="md:w-5/12 flex flex-col justify-between gap-4">
               {/* Top */}
               <div>
-                <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-slate-900/80 border border-slate-700/70 mb-3">
+                <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/70 mb-3">
                   <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[11px] font-medium text-slate-200">
+                  <span className="text-[11px] font-medium text-slate-700 dark:text-slate-200">
                     OTP-secured registration · No fake accounts
                   </span>
                 </div>
@@ -138,14 +138,14 @@ export default function RegisterPage() {
                   </span>{' '}
                   account
                 </h1>
-                <p className="text-slate-400 text-xs sm:text-[13px]">
+                <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-[13px]">
                   Secure email + password signup with email OTP verification. Designed for
                   production-ready chat apps.
                 </p>
               </div>
 
               {/* Middle: bullets */}
-              <div className="mt-4 space-y-2 text-[11px] text-slate-300">
+              <div className="mt-4 space-y-2 text-[11px] text-slate-700 dark:text-slate-300">
                 <div className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-sky-400" />
                   <span>Encrypted credentials, never stored in plain text</span>
@@ -172,14 +172,14 @@ export default function RegisterPage() {
             </div>
 
             {/* RIGHT: Form (no scroll, compact) */}
-            <div className="md:w-7/12 border-t md:border-t-0 md:border-l border-slate-800 pt-4 md:pt-0 md:pl-6 flex flex-col justify-between">
+            <div className="md:w-7/12 border-t md:border-t-0 md:border-l border-slate-200 dark:border-slate-800 pt-4 md:pt-0 md:pl-6 flex flex-col justify-between">
               {/* Optional: small label row */}
               <div className="flex items-center justify-between mb-3 text-[11px] text-slate-500">
                 <span>Use Google or email to continue</span>
                 <button
                   type="button"
                   onClick={() => router.push('/')}
-                  className="hidden md:inline-block hover:text-slate-300 transition-colors"
+                  className="hidden md:inline-block hover:text-slate-800 dark:hover:text-slate-300 transition-colors"
                 >
                   ← Back to home
                 </button>
@@ -211,10 +211,10 @@ export default function RegisterPage() {
               {/* Divider */}
               <div className="relative mb-4">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-700" />
+                  <div className="w-full border-t border-slate-200 dark:border-slate-700" />
                 </div>
                 <div className="relative flex justify-center text-[10px] uppercase tracking-wide">
-                  <span className="px-2 bg-slate-950 text-slate-400">Or register with email</span>
+                  <span className="px-2 bg-white dark:bg-slate-950 text-slate-500 dark:text-slate-400">Or register with email</span>
                 </div>
               </div>
 
@@ -222,7 +222,7 @@ export default function RegisterPage() {
               <form onSubmit={handleSubmit} className="space-y-3 text-xs sm:text-[13px]">
                 {/* Username */}
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-200 mb-1.5">
+                  <label className="block text-[11px] font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                     Username
                   </label>
                   <div className="relative">
@@ -233,7 +233,7 @@ export default function RegisterPage() {
                       type="text"
                       value={formData.username}
                       onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 bg-slate-900/80 border border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500/40 focus:border-sky-400 outline-none transition-all text-slate-100 placeholder:text-slate-500"
+                      className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500/40 focus:border-sky-400 outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                       placeholder="johndoe"
                       required
                     />
@@ -242,7 +242,7 @@ export default function RegisterPage() {
 
                 {/* Email */}
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-200 mb-1.5">
+                  <label className="block text-[11px] font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                     Email address
                   </label>
                   <div className="relative">
@@ -253,7 +253,7 @@ export default function RegisterPage() {
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 bg-slate-900/80 border border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500/40 focus:border-sky-400 outline-none transition-all text-slate-100 placeholder:text-slate-500"
+                      className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500/40 focus:border-sky-400 outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                       placeholder="you@example.com"
                       required
                     />
@@ -262,7 +262,7 @@ export default function RegisterPage() {
 
                 {/* Password */}
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-200 mb-1.5">
+                  <label className="block text-[11px] font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                     Password
                   </label>
                   <div className="relative">
@@ -273,7 +273,7 @@ export default function RegisterPage() {
                       type="password"
                       value={formData.password}
                       onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 bg-slate-900/80 border border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500/40 focus:border-sky-400 outline-none transition-all text-slate-100 placeholder:text-slate-500"
+                      className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500/40 focus:border-sky-400 outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                       placeholder="••••••••"
                       minLength={6}
                       required
@@ -282,14 +282,14 @@ export default function RegisterPage() {
                   {formData.password && (
                     <div className="mt-1.5">
                       <div className="flex items-center gap-2">
-                        <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div className="flex-1 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                           <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${passwordStrength.strength}%` }}
                             className={`h-full ${passwordStrength.color} transition-all`}
                           />
                         </div>
-                        <span className="text-[10px] font-medium text-slate-400">
+                        <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400">
                           {passwordStrength.label}
                         </span>
                       </div>
@@ -299,7 +299,7 @@ export default function RegisterPage() {
 
                 {/* Confirm Password */}
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-200 mb-1.5">
+                  <label className="block text-[11px] font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                     Confirm password
                   </label>
                   <div className="relative">
@@ -312,7 +312,7 @@ export default function RegisterPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, confirmPassword: e.target.value })
                       }
-                      className="w-full pl-9 pr-9 py-2 bg-slate-900/80 border border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500/40 focus:border-sky-400 outline-none transition-all text-slate-100 placeholder:text-slate-500"
+                      className="w-full pl-9 pr-9 py-2 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500/40 focus:border-sky-400 outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                       placeholder="••••••••"
                       required
                     />
