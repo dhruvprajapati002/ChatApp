@@ -39,6 +39,20 @@ export const initializeSocket = (httpServer) => {
                 // Send list of all online users to the newly connected user
                 const onlineUserIds = Array.from(onlineUsers.keys());
                 socket.emit('online_users', onlineUserIds);
+                // Update all pending messages to 'delivered'
+                const pendingMessages = await Message.find({ receiverId: userId, status: 'sent' });
+                if (pendingMessages.length > 0) {
+                    await Message.updateMany({ receiverId: userId, status: 'sent' }, { $set: { status: 'delivered' } });
+                    // Get unique conversation IDs
+                    const conversationIds = [...new Set(pendingMessages.map(m => m.conversationId))];
+                    conversationIds.forEach(convId => {
+                        io.to(convId).emit('messages_status_update', {
+                            conversationId: convId,
+                            receiverId: userId,
+                            status: 'delivered'
+                        });
+                    });
+                }
             }
             catch (error) {
                 console.error('Error updating user online status:', error);
@@ -55,21 +69,26 @@ export const initializeSocket = (httpServer) => {
                     console.error('❌ Missing required fields');
                     return;
                 }
+                const isReceiverOnline = onlineUsers.has(data.receiverId);
+                const status = isReceiverOnline ? 'delivered' : 'sent';
                 const newMessage = await Message.create({
                     conversationId: data.conversationId,
                     senderId: data.senderId,
                     receiverId: data.receiverId,
                     message: data.message,
-                    status: 'sent'
+                    status
                 });
                 console.log('✅ Message saved:', newMessage._id);
                 // Broadcast to room
                 io.to(data.conversationId).emit('receive_message', {
+                    _id: newMessage._id.toString(),
                     conversationId: data.conversationId,
                     senderId: data.senderId,
                     receiverId: data.receiverId,
                     message: data.message,
-                    timestamp: newMessage.createdAt
+                    timestamp: newMessage.createdAt,
+                    status,
+                    reactions: []
                 });
             }
             catch (error) {
@@ -81,6 +100,37 @@ export const initializeSocket = (httpServer) => {
         });
         socket.on('stop_typing', (conversationId) => {
             socket.to(conversationId).emit('user_stopped_typing', conversationId);
+        });
+        socket.on('mark_messages_read', async (data) => {
+            try {
+                await Message.updateMany({ conversationId: data.conversationId, receiverId: data.receiverId, status: { $in: ['sent', 'delivered'] } }, { $set: { status: 'read' } });
+                io.to(data.conversationId).emit('messages_status_update', {
+                    conversationId: data.conversationId,
+                    receiverId: data.receiverId,
+                    status: 'read'
+                });
+            }
+            catch (error) {
+                console.error('❌ Error marking messages read:', error);
+            }
+        });
+        socket.on('message_reaction', async (data) => {
+            try {
+                if (!data.messageId || !data.emoji || !data.userId || !data.conversationId)
+                    return;
+                // Remove existing reaction by this user on this message (if any), then add new reaction
+                await Message.findByIdAndUpdate(data.messageId, {
+                    $pull: { reactions: { userId: data.userId } }
+                });
+                await Message.findByIdAndUpdate(data.messageId, {
+                    $push: { reactions: { emoji: data.emoji, userId: data.userId } }
+                });
+                // Broadcast to everyone in the room (including sender to update their UI)
+                io.to(data.conversationId).emit('message_reaction', data);
+            }
+            catch (error) {
+                console.error('❌ Error saving reaction:', error);
+            }
         });
         socket.on('disconnect', async () => {
             console.log('❌ User disconnected:', socket.id);

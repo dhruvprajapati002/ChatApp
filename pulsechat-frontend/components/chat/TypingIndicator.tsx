@@ -7,7 +7,7 @@ export default function TypingIndicator() {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex items-center gap-3 p-4 bg-slate-800/60 backdrop-blur-xl rounded-3xl border border-slate-700/50 shadow-xl shadow-slate-900/50"
+      className="flex items-center gap-3 p-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl rounded-3xl border border-slate-200 dark:border-slate-700/50 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50"
     >
       {/* Animated typing dots */}
       <div className="flex items-center gap-1.5">
@@ -53,7 +53,7 @@ export default function TypingIndicator() {
       
       {/* Typing text */}
       <motion.span 
-        className="text-sm font-medium text-slate-300 bg-gradient-to-r from-sky-400/80 to-violet-400/80 bg-clip-text"
+        className="text-sm font-medium text-slate-700 dark:text-slate-300 bg-gradient-to-r from-sky-500/90 to-violet-500/90 dark:from-sky-400/80 dark:to-violet-400/80 bg-clip-text"
         animate={{ opacity: [0.8, 1, 0.8] }}
         transition={{ 
           duration: 1.8,

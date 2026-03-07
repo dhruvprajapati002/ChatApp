@@ -4,7 +4,11 @@ const MessageSchema = new Schema({
     senderId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     receiverId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     message: { type: String, required: true },
-    status: { type: String, enum: ['sent', 'delivered', 'read'], default: 'sent' }
+    status: { type: String, enum: ['sent', 'delivered', 'read'], default: 'sent' },
+    reactions: [{
+            emoji: { type: String, required: true },
+            userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }
+        }]
 }, { timestamps: true });
 // Performance optimization
 MessageSchema.index({ conversationId: 1, createdAt: -1 });

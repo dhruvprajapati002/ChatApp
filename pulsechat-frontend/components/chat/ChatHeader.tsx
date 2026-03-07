@@ -11,7 +11,7 @@ interface ChatHeaderProps {
 
 export default function ChatHeader({ user, onBack }: ChatHeaderProps) {
   return (
-    <div className="border-b border-slate-800/50 p-4 bg-slate-900/80 backdrop-blur-xl z-20 sticky top-0">
+    <div className="border-b border-slate-200 dark:border-slate-800/50 p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl z-20 sticky top-0">
       <div className="flex items-center justify-between max-w-[1400px] mx-auto">
         <div className="flex items-center gap-4">
           {onBack && (
@@ -19,7 +19,7 @@ export default function ChatHeader({ user, onBack }: ChatHeaderProps) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={onBack} 
-              className="lg:hidden p-2.5 hover:bg-slate-800/50 rounded-xl transition-all text-slate-400 hover:text-slate-200"
+              className="lg:hidden p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-xl transition-all text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
               aria-label="Go back"
             >
               <ArrowLeft size={20} />
@@ -32,7 +32,7 @@ export default function ChatHeader({ user, onBack }: ChatHeaderProps) {
                 <img 
                   src={user.avatar} 
                   alt={user.username}
-                  className="w-10 h-10 rounded-full object-cover ring-2 ring-slate-800"
+                  className="w-10 h-10 rounded-full object-cover ring-2 ring-slate-200 dark:ring-slate-800"
                 />
               ) : (
                 <div className="w-10 h-10 bg-gradient-to-br from-sky-500 to-violet-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-inner">
@@ -40,14 +40,14 @@ export default function ChatHeader({ user, onBack }: ChatHeaderProps) {
                 </div>
               )}
               {user.isOnline && (
-                <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-slate-900 rounded-full">
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full">
                   <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75"></span>
                 </span>
               )}
             </div>
 
             <div>
-              <h3 className="font-semibold text-slate-100 leading-snug">{user.username}</h3>
+              <h3 className="font-semibold text-slate-900 dark:text-slate-100 leading-snug">{user.username}</h3>
               <p className="text-xs font-medium text-slate-500 flex items-center gap-1.5">
                 {user.isOnline ? (
                   <span className="text-emerald-400">Active Now</span>
@@ -61,25 +61,25 @@ export default function ChatHeader({ user, onBack }: ChatHeaderProps) {
 
         <div className="flex items-center gap-1">
           <motion.button 
-            whileHover={{ scale: 1.05, backgroundColor: "rgba(30, 41, 59, 0.5)" }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="p-2.5 rounded-xl text-slate-400 hover:text-sky-400 transition-colors"
+            className="p-2.5 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 dark:text-slate-400 hover:text-sky-500 dark:hover:text-sky-400 transition-colors"
           >
             <Phone size={20} className="stroke-[1.5]" />
           </motion.button>
           
           <motion.button 
-            whileHover={{ scale: 1.05, backgroundColor: "rgba(30, 41, 59, 0.5)" }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="p-2.5 rounded-xl text-slate-400 hover:text-sky-400 transition-colors"
+            className="p-2.5 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 dark:text-slate-400 hover:text-sky-500 dark:hover:text-sky-400 transition-colors"
           >
             <Video size={20} className="stroke-[1.5]" />
           </motion.button>
           
           <motion.button 
-            whileHover={{ scale: 1.05, backgroundColor: "rgba(30, 41, 59, 0.5)" }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="p-2.5 rounded-xl text-slate-400 hover:text-slate-200 transition-colors"
+            className="p-2.5 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors"
           >
             <MoreVertical size={20} className="stroke-[1.5]" />
           </motion.button>

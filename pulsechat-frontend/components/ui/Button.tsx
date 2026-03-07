@@ -24,11 +24,11 @@ export default function Button({
   const baseStyles = 'font-semibold rounded-3xl transition-all duration-200 inline-flex items-center justify-center gap-2.5 disabled:opacity-60 disabled:cursor-not-allowed backdrop-blur-sm shadow-lg hover:shadow-xl border border-slate-800/50 hover:border-slate-700/70';
   
   const variants = {
-    primary: 'bg-gradient-to-r from-sky-500 to-violet-500 text-white hover:from-sky-400 hover:to-violet-400 shadow-sky-500/40 hover:shadow-sky-500/50 ring-1 ring-sky-500/30 hover:ring-sky-400/40',
-    secondary: 'bg-slate-800/80 text-slate-200 hover:bg-slate-700/80 hover:text-slate-100 shadow-slate-500/20 hover:shadow-slate-500/30 ring-1 ring-slate-700/40 hover:ring-slate-600/50',
-    danger: 'bg-gradient-to-r from-red-500 to-rose-500 text-white hover:from-red-400 hover:to-rose-400 shadow-red-500/40 hover:shadow-red-500/50 ring-1 ring-red-500/30 hover:ring-red-400/40',
-    ghost: 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 shadow-slate-500/10 hover:shadow-slate-500/20 ring-1 ring-transparent hover:ring-slate-700/30',
-    outline: 'bg-slate-900/50 text-slate-200 border-slate-700/50 hover:border-sky-500/50 hover:text-sky-300 hover:bg-sky-500/10 shadow-slate-500/20 hover:shadow-sky-500/30 ring-1 ring-transparent hover:ring-sky-500/30'
+    primary: 'bg-gradient-to-r from-sky-500 to-violet-500 text-white hover:from-sky-400 hover:to-violet-400 shadow-sky-500/30 dark:shadow-sky-500/40 hover:shadow-sky-500/40 dark:hover:shadow-sky-500/50 ring-1 ring-sky-500/30 hover:ring-sky-400/40',
+    secondary: 'bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700/80 hover:text-slate-900 dark:hover:text-slate-100 shadow-slate-200/50 dark:shadow-slate-500/20 hover:shadow-slate-300/50 dark:hover:shadow-slate-500/30 ring-1 ring-slate-200 dark:ring-slate-700/40 hover:ring-slate-300 dark:hover:ring-slate-600/50',
+    danger: 'bg-gradient-to-r from-red-500 to-rose-500 text-white hover:from-red-400 hover:to-rose-400 shadow-red-500/30 dark:shadow-red-500/40 hover:shadow-red-500/40 dark:hover:shadow-red-500/50 ring-1 ring-red-500/30 hover:ring-red-400/40',
+    ghost: 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50 shadow-slate-200/50 dark:shadow-slate-500/10 hover:shadow-slate-300/50 dark:hover:shadow-slate-500/20 ring-1 ring-transparent hover:ring-slate-200 dark:hover:ring-slate-700/30',
+    outline: 'bg-white/50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700/50 hover:border-sky-500/50 hover:text-sky-600 dark:hover:text-sky-300 hover:bg-sky-50 dark:hover:bg-sky-500/10 shadow-slate-200/50 dark:shadow-slate-500/20 hover:shadow-sky-500/20 dark:hover:shadow-sky-500/30 ring-1 ring-transparent hover:ring-sky-500/30'
   };
 
   const sizes = {

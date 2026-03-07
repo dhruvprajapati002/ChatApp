@@ -40,10 +40,24 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white overflow-hidden selection:bg-sky-500/30">
+    <div className="min-h-screen bg-background text-foreground overflow-hidden selection:bg-sky-500/30">
       <Navbar />
 
       {/* Dynamic Background */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <div className="absolute -top-40 -left-60 w-[40rem] h-[40rem] bg-sky-500/10 blur-[120px] rounded-full" />
+        <div className="absolute top-1/2 -right-40 w-[40rem] h-[40rem] bg-violet-500/10 blur-[120px] rounded-full" />
+      </div>
+
+      {/* Subtle Grid */}
+      <div
+        className="pointer-events-none fixed inset-0 opacity-[0.05] dark:opacity-[0.03] z-0"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)',
+          backgroundSize: '40px 40px',
+        }}
+      />
 
       <main className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-24 md:pt-48 md:pb-32">
         <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
@@ -79,23 +93,23 @@ export default function HomePage() {
               </button>
               <button 
                 onClick={() => router.push('/login')}
-                className="w-full sm:w-auto px-8 py-4 bg-slate-800/50 text-white rounded-2xl font-bold border border-slate-700 hover:bg-slate-800 hover:border-slate-600 transition-all duration-200"
+                className="w-full sm:w-auto px-8 py-4 bg-slate-200 dark:bg-slate-800/50 text-slate-900 dark:text-white rounded-2xl font-bold border border-slate-300 dark:border-slate-700 hover:bg-slate-300 dark:hover:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-600 transition-all duration-200"
               >
                 Live Demo
               </button>
             </div>
 
-            <div className="pt-8 grid grid-cols-2 sm:grid-cols-3 gap-6 border-t border-slate-800/60">
+            <div className="pt-8 grid grid-cols-2 sm:grid-cols-3 gap-6 border-t border-slate-200 dark:border-slate-800/60">
               <div className="space-y-1">
-                <h4 className="text-2xl font-bold text-white">100ms</h4>
+                <h4 className="text-2xl font-bold text-slate-900 dark:text-white">100ms</h4>
                 <p className="text-slate-500 text-sm">Latency</p>
               </div>
               <div className="space-y-1">
-                <h4 className="text-2xl font-bold text-white">99.9%</h4>
+                <h4 className="text-2xl font-bold text-slate-900 dark:text-white">99.9%</h4>
                 <p className="text-slate-500 text-sm">Uptime</p>
               </div>
               <div className="col-span-2 sm:col-span-1 space-y-1">
-                <h4 className="text-2xl font-bold text-white">256-bit</h4>
+                <h4 className="text-2xl font-bold text-slate-900 dark:text-white">256-bit</h4>
                 <p className="text-slate-500 text-sm">Encryption</p>
               </div>
             </div>
@@ -112,7 +126,7 @@ export default function HomePage() {
               {/* Glow Effect */}
               <div className="absolute -inset-1 bg-gradient-to-r from-sky-500 via-violet-500 to-fuchsia-500 rounded-[2.5rem] blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
               
-              <div className="relative bg-slate-900/90 border border-slate-700/50 rounded-[2rem] p-6 lg:p-8 backdrop-blur-2xl shadow-2xl overflow-hidden">
+              <div className="relative bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700/50 rounded-[2rem] p-6 lg:p-8 backdrop-blur-2xl shadow-2xl overflow-hidden">
                 
                 {/* Auth Area */}
                 <div className="space-y-6">
@@ -120,8 +134,8 @@ export default function HomePage() {
                     <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-sky-400 to-violet-500 mx-auto flex items-center justify-center shadow-lg transform group-hover:rotate-12 transition-transform duration-500">
                       <Zap className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-white">Welcome Back</h3>
-                    <p className="text-slate-400 text-sm">Sign in to access your workspace</p>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">Welcome Back</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm">Sign in to access your workspace</p>
                   </div>
 
                   <div className="space-y-3">
@@ -129,7 +143,7 @@ export default function HomePage() {
                       <GoogleLogin
                         onSuccess={handleGoogleSuccess}
                         onError={handleGoogleError}
-                        theme="filled_black"
+                        theme="outline"
                         shape="pill"
                         size="large"
                         width="100%"
@@ -144,37 +158,37 @@ export default function HomePage() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                      <button onClick={() => router.push('/login')} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-800/50 border border-slate-700 hover:bg-slate-800 hover:border-slate-600 transition-all group/btn">
-                        <Lock className="w-4 h-4 text-slate-400 group-hover/btn:text-sky-400 transition-colors" />
-                        <span className="text-sm font-medium text-slate-300">Login</span>
+                      <button onClick={() => router.push('/login')} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all group/btn">
+                        <Lock className="w-4 h-4 text-slate-500 dark:text-slate-400 group-hover/btn:text-sky-500 dark:group-hover/btn:text-sky-400 transition-colors" />
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Login</span>
                       </button>
-                      <button onClick={() => router.push('/register')} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-800/50 border border-slate-700 hover:bg-slate-800 hover:border-slate-600 transition-all group/btn">
-                        <Globe className="w-4 h-4 text-slate-400 group-hover/btn:text-violet-400 transition-colors" />
-                        <span className="text-sm font-medium text-slate-300">Register</span>
+                      <button onClick={() => router.push('/register')} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all group/btn">
+                        <Globe className="w-4 h-4 text-slate-500 dark:text-slate-400 group-hover/btn:text-violet-500 dark:group-hover/btn:text-violet-400 transition-colors" />
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Register</span>
                       </button>
                     </div>
                   </div>
 
                   {/* Fake Chat Preview */}
-                  <div className="mt-8 pt-6 border-t border-slate-800/50">
+                  <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800/50">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="flex -space-x-2">
-                         <div className="w-8 h-8 rounded-full border-2 border-slate-900 bg-sky-500"></div>
-                         <div className="w-8 h-8 rounded-full border-2 border-slate-900 bg-violet-500"></div>
-                         <div className="w-8 h-8 rounded-full border-2 border-slate-900 bg-emerald-500"></div>
+                         <div className="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 bg-sky-500"></div>
+                         <div className="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 bg-violet-500"></div>
+                         <div className="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 bg-emerald-500"></div>
                       </div>
-                      <span className="text-xs text-slate-400 font-medium">1.2k+ users online</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">1.2k+ users online</span>
                     </div>
                     
                     <div className="space-y-3">
                       <div className="flex items-end gap-2">
                         <div className="w-6 h-6 rounded-full bg-indigo-500 flex-shrink-0"></div>
-                        <div className="px-3 py-2 bg-slate-800 rounded-2xl rounded-bl-none text-xs text-slate-200">
+                        <div className="px-3 py-2 bg-slate-100 dark:bg-slate-800 rounded-2xl rounded-bl-none text-xs text-slate-700 dark:text-slate-200">
                           Hey! Is the new update live? 🚀
                         </div>
                       </div>
                       <div className="flex items-end gap-2 justify-end">
-                        <div className="px-3 py-2 bg-sky-600/20 text-sky-200 border border-sky-500/20 rounded-2xl rounded-br-none text-xs">
+                        <div className="px-3 py-2 bg-sky-100 dark:bg-sky-600/20 text-sky-700 dark:text-sky-200 border border-sky-200 dark:border-sky-500/20 rounded-2xl rounded-br-none text-xs">
                           Yes! Just deployed it. Check it out!
                         </div>
                         <div className="w-6 h-6 rounded-full bg-sky-500 flex-shrink-0"></div>
@@ -190,10 +204,10 @@ export default function HomePage() {
 
         {/* Features Stripes */}
         <div id="features" className="mt-24 mb-32 relative">
-           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-full bg-slate-900/50 blur-3xl -z-10 rounded-full"></div>
-           <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4">Why users love PulseChat</h2>
-              <p className="text-slate-400 max-w-2xl mx-auto">Built for speed, designed for clarity. Everything you need to communicate effectively.</p>
+           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-full bg-slate-100/50 dark:bg-slate-900/50 blur-3xl -z-10 rounded-full"></div>
+           <div className="text-center mb-16 relative z-10">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">Why users love PulseChat</h2>
+              <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Built for speed, designed for clarity. Everything you need to communicate effectively.</p>
            </div>
 
            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -208,13 +222,13 @@ export default function HomePage() {
               <motion.div
                 key={i}
                 whileHover={{ y: -5 }}
-                className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800/50 backdrop-blur-sm hover:bg-slate-800/40 hover:border-slate-700/50 transition-all text-center md:text-left group"
+                className="p-6 rounded-2xl bg-white/50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/50 backdrop-blur-sm hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:border-slate-300 dark:hover:border-slate-700/50 transition-all text-center md:text-left group"
               >
-                <div className={`w-12 h-12 rounded-xl bg-slate-800/80 flex items-center justify-center mb-4 mx-auto md:mx-0 ${feature.color} group-hover:scale-110 transition-transform`}>
+                <div className={`w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800/80 flex items-center justify-center mb-4 mx-auto md:mx-0 ${feature.color} group-hover:scale-110 transition-transform`}>
                   <feature.icon size={24} />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">{feature.title}</h3>
-                <p className="text-slate-400 text-sm">{feature.desc}</p>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{feature.title}</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -223,23 +237,23 @@ export default function HomePage() {
         {/* About Section */}
         <div id="about" className="mb-32 max-w-4xl mx-auto relative">
            <div className="absolute -right-20 top-0 w-72 h-72 bg-violet-600/10 blur-[100px] rounded-full"></div>
-           <div className="bg-slate-900/30 border border-slate-800/50 rounded-3xl p-8 md:p-12 backdrop-blur-md relative overflow-hidden">
+           <div className="bg-white/50 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800/50 rounded-3xl p-8 md:p-12 backdrop-blur-md relative overflow-hidden">
              <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
                <div className="flex-1 space-y-6 text-center md:text-left">
-                  <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">About PulseChat</h2>
-                  <p className="text-slate-400 leading-relaxed">
+                  <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-500 dark:from-white dark:to-slate-400">About PulseChat</h2>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
                     PulseChat started as a passion project to simplify real-time communication. 
                     We believe messaging should be instantaneous, distraction-free, and beautiful.
                   </p>
-                  <p className="text-slate-400 leading-relaxed">
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
                     Built with the latest web technologies like Next.js, Socket.IO, and Tailwind CSS, 
                     we push the boundaries of what's possible in the browser.
                   </p>
                </div>
                <div className="flex-shrink-0">
                   <div className="w-48 h-48 rounded-2xl bg-gradient-to-tr from-sky-500 to-violet-600 p-1 rotate-3 hover:rotate-0 transition-all duration-300">
-                     <div className="w-full h-full bg-slate-950 rounded-xl flex items-center justify-center overflow-hidden">
-                        <Users size={64} className="text-white/20" />
+                     <div className="w-full h-full bg-slate-100 dark:bg-slate-950 rounded-xl flex items-center justify-center overflow-hidden">
+                        <Users size={64} className="text-slate-300 dark:text-white/20" />
                      </div>
                   </div>
                </div>
@@ -249,21 +263,21 @@ export default function HomePage() {
 
         {/* Contact Section */}
         <div id="contact" className="mb-24 max-w-3xl mx-auto text-center">
-           <h2 className="text-4xl font-bold mb-6">Get in touch</h2>
-           <p className="text-slate-400 mb-10">Have questions or feedback? I'd love to hear from you.</p>
+           <h2 className="text-4xl font-bold mb-6 text-slate-900 dark:text-white">Get in touch</h2>
+           <p className="text-slate-600 dark:text-slate-400 mb-10">Have questions or feedback? I'd love to hear from you.</p>
            
            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-             <a href="mailto:hello@pulsechat.dev" className="p-4 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-sky-500/50 transition-colors flex items-center justify-center gap-3 group">
-               <div className="p-2 bg-sky-500/10 rounded-lg text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all">
+             <a href="mailto:hello@pulsechat.dev" className="p-4 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 hover:border-sky-500/50 transition-colors flex items-center justify-center gap-3 group">
+               <div className="p-2 bg-sky-500/10 rounded-lg text-sky-500 dark:text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all">
                  <MessageCircle size={20} />
                </div>
-               <span className="font-medium text-slate-200">hello@pulsechat.dev</span>
+               <span className="font-medium text-slate-800 dark:text-slate-200">hello@pulsechat.dev</span>
              </a>
-             <a href="https://twitter.com/pulsechat" target="_blank" rel="noopener noreferrer" className="p-4 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-violet-500/50 transition-colors flex items-center justify-center gap-3 group">
-              <div className="p-2 bg-violet-500/10 rounded-lg text-violet-400 group-hover:bg-violet-500 group-hover:text-white transition-all">
+             <a href="https://twitter.com/pulsechat" target="_blank" rel="noopener noreferrer" className="p-4 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 hover:border-violet-500/50 transition-colors flex items-center justify-center gap-3 group">
+              <div className="p-2 bg-violet-500/10 rounded-lg text-violet-500 dark:text-violet-400 group-hover:bg-violet-500 group-hover:text-white transition-all">
                  <Globe size={20} />
                </div>
-               <span className="font-medium text-slate-200">@pulsechat_app</span>
+               <span className="font-medium text-slate-800 dark:text-slate-200">@pulsechat_app</span>
              </a>
            </div>
 

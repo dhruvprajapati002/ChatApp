@@ -16,12 +16,14 @@ export const getMessages = async (req: AuthRequest, res: Response): Promise<void
 
     // Format messages for frontend
     const formattedMessages = messages.map(msg => ({
+      _id: msg._id.toString(),
       conversationId: msg.conversationId,
       senderId: msg.senderId.toString(),
       receiverId: msg.receiverId.toString(),
       message: msg.message,
       timestamp: msg.createdAt,  // ✅ Use createdAt as timestamp
-      status: msg.status
+      status: msg.status,
+      reactions: msg.reactions || []
     }));
 
     res.json(formattedMessages);
@@ -53,12 +55,14 @@ export const sendMessage = async (req: AuthRequest, res: Response): Promise<void
     });
 
     res.status(201).json({
+      _id: newMessage._id.toString(),
       conversationId: newMessage.conversationId,
       senderId: newMessage.senderId.toString(),
       receiverId: newMessage.receiverId.toString(),
       message: newMessage.message,
       timestamp: newMessage.createdAt,  // ✅ Use createdAt as timestamp
-      status: newMessage.status
+      status: newMessage.status,
+      reactions: []
     });
   } catch (error) {
     console.error('Send message error:', error);

@@ -28,8 +28,8 @@ export default function UserItem({ user, isActive, onClick }: UserItemProps) {
       className={`
         w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 group relative
         ${isActive 
-          ? 'bg-sky-500/10 border border-sky-500/20 shadow-sm' 
-          : 'hover:bg-slate-800/50 border border-transparent hover:border-slate-700/50'
+          ? 'bg-sky-50 dark:bg-sky-500/10 border border-sky-200 dark:border-sky-500/20 shadow-sm' 
+          : 'hover:bg-slate-100 dark:hover:bg-slate-800/50 border border-transparent hover:border-slate-200 dark:hover:border-slate-700/50'
         }
       `}
     >
@@ -39,7 +39,7 @@ export default function UserItem({ user, isActive, onClick }: UserItemProps) {
           <img 
             src={user.avatar} 
             alt={user.username}
-            className={`w-12 h-12 rounded-full object-cover bg-slate-800 ${
+            className={`w-12 h-12 rounded-full object-cover bg-slate-200 dark:bg-slate-800 ${
               isActive ? 'ring-2 ring-sky-500/30' : ''
             }`}
           />
@@ -47,7 +47,7 @@ export default function UserItem({ user, isActive, onClick }: UserItemProps) {
           <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-colors ${
             isActive 
               ? 'bg-gradient-to-br from-sky-500 to-blue-600 text-white' 
-              : 'bg-slate-800 text-slate-300 group-hover:bg-slate-700 group-hover:text-slate-200'
+              : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 group-hover:bg-slate-300 dark:group-hover:bg-slate-700 group-hover:text-slate-800 dark:group-hover:text-slate-200'
           }`}>
             {user.username.charAt(0).toUpperCase()}
           </div>
@@ -65,7 +65,7 @@ export default function UserItem({ user, isActive, onClick }: UserItemProps) {
       <div className="flex-1 min-w-0 text-left">
         <div className="flex items-center justify-between mb-0.5">
           <h4 className={`font-semibold text-sm truncate ${
-            isActive ? 'text-white' : 'text-slate-200 group-hover:text-white'
+            isActive ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white'
           }`}>
             {user.username}
           </h4>
@@ -77,7 +77,7 @@ export default function UserItem({ user, isActive, onClick }: UserItemProps) {
         </div>
         
         <p className={`text-xs truncate ${
-          isActive ? 'text-sky-200/70' : 'text-slate-500 group-hover:text-slate-400'
+          isActive ? 'text-sky-600 dark:text-sky-200/70' : 'text-slate-500 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-400'
         }`}>
           {user.isOnline ? 'Active now' : `Seen ${formatLastSeen()}`}
         </p>

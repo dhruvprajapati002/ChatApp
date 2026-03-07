@@ -117,15 +117,15 @@ function VerifyOTPContent() {
 
   if (!tempUserId || !email) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
+      <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center p-8 bg-slate-900/90 rounded-2xl shadow-2xl border border-red-500/40 max-w-md"
+          className="text-center p-8 bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-2xl border border-red-500/40 max-w-md"
         >
           <AlertCircle className="mx-auto text-red-400 mb-4" size={48} />
-          <h2 className="text-xl font-bold text-slate-50 mb-2">Invalid access</h2>
-          <p className="text-slate-400 mb-4 text-sm">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-2">Invalid access</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-4 text-sm">
             No verification session found. Please register again to get a fresh verification code.
           </p>
           <Link
@@ -140,7 +140,7 @@ function VerifyOTPContent() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-background text-foreground relative overflow-hidden">
       {/* Background glows */}
       <div className="pointer-events-none fixed inset-0">
         <div className="absolute -top-40 -left-40 w-80 h-80 bg-blue-600/30 blur-3xl rounded-full" />
@@ -167,11 +167,11 @@ function VerifyOTPContent() {
           {/* Glow border */}
           <div className="absolute -inset-0.5 bg-gradient-to-br from-sky-500 via-blue-500 to-violet-500 rounded-3xl opacity-70 blur-xl" />
 
-          <div className="relative bg-slate-950/90 border border-slate-800 rounded-3xl shadow-2xl backdrop-blur-xl p-6 md:p-7">
+          <div className="relative bg-white/90 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl backdrop-blur-xl p-6 md:p-7">
             <div className="mb-4 flex items-center justify-between text-[11px] text-slate-500">
               <button
                 onClick={() => router.push('/register')}
-                className="inline-flex items-center gap-1 hover:text-slate-200 transition-colors"
+                className="inline-flex items-center gap-1 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
               >
                 <ArrowLeft size={16} />
                 <span>Back to register</span>
@@ -185,9 +185,9 @@ function VerifyOTPContent() {
               {/* LEFT: Info */}
               <div className="md:w-5/12 flex flex-col justify-between gap-4">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-slate-900/80 border border-slate-700/70 mb-3">
+                  <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/70 mb-3">
                     <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[11px] font-medium text-slate-200">
+                    <span className="text-[11px] font-medium text-slate-700 dark:text-slate-200">
                       OTP-secured account creation
                     </span>
                   </div>
@@ -202,13 +202,13 @@ function VerifyOTPContent() {
                       email
                     </span>
                   </h1>
-                  <p className="text-slate-400 text-xs sm:text-[13px]">
+                  <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-[13px]">
                     A 6-digit verification code has been sent to:
                   </p>
-                  <p className="mt-1 text-sky-400 font-semibold text-xs break-all">{email}</p>
+                  <p className="mt-1 text-sky-500 dark:text-sky-400 font-semibold text-xs break-all">{email}</p>
                 </div>
 
-                <div className="mt-4 space-y-2 text-[11px] text-slate-300">
+                <div className="mt-4 space-y-2 text-[11px] text-slate-700 dark:text-slate-300">
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-sky-400" />
                     <span>Code is valid for 10 minutes from generation</span>
@@ -232,7 +232,7 @@ function VerifyOTPContent() {
               </div>
 
               {/* RIGHT: OTP form */}
-              <div className="md:w-7/12 border-t md:border-t-0 md:border-l border-slate-800 pt-4 md:pt-0 md:pl-6 flex flex-col justify-between">
+              <div className="md:w-7/12 border-t md:border-t-0 md:border-l border-slate-200 dark:border-slate-800 pt-4 md:pt-0 md:pl-6 flex flex-col justify-between">
                 <AnimatePresence mode="wait">
                   {!success ? (
                     <motion.div
@@ -258,9 +258,9 @@ function VerifyOTPContent() {
                           onChange={setOtp}
                           numInputs={6}
                           renderInput={(props) => (
-                            <input
+                          <input
                               {...props}
-                              className="!w-10 !h-12 mx-1 text-center text-xl font-semibold border border-slate-700 rounded-xl focus:border-sky-400 focus:ring-2 focus:ring-sky-500/40 outline-none transition-all text-slate-50 bg-slate-900/80 disabled:bg-slate-800"
+                              className="!w-10 !h-12 mx-1 text-center text-xl font-semibold border border-slate-200 dark:border-slate-700 rounded-xl focus:border-sky-500/80 dark:focus:border-sky-400 focus:ring-2 focus:ring-sky-500/40 outline-none transition-all text-slate-900 dark:text-slate-50 bg-slate-50 dark:bg-slate-900/80 disabled:bg-slate-100 dark:disabled:bg-slate-800"
                               disabled={timer === 0 || loading}
                             />
                           )}
@@ -276,7 +276,7 @@ function VerifyOTPContent() {
                               ? 'bg-red-500/10 border border-red-500/50'
                               : timer < 60
                               ? 'bg-amber-500/10 border border-amber-500/40'
-                              : 'bg-slate-900/80 border border-slate-700'
+                              : 'bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700'
                           }`}
                         >
                           <Clock
@@ -285,17 +285,17 @@ function VerifyOTPContent() {
                               timer === 0
                                 ? 'text-red-400'
                                 : timer < 60
-                                ? 'text-amber-300'
-                                : 'text-slate-300'
+                                ? 'text-amber-500 dark:text-amber-300'
+                                : 'text-slate-400 dark:text-slate-300'
                             }
                           />
                           <span
                             className={`text-[11px] font-semibold ${
                               timer === 0
-                                ? 'text-red-300'
+                                ? 'text-red-400 dark:text-red-300'
                                 : timer < 60
-                                ? 'text-amber-200'
-                                : 'text-slate-200'
+                                ? 'text-amber-500 dark:text-amber-200'
+                                : 'text-slate-600 dark:text-slate-200'
                             }`}
                           >
                             {timer === 0 ? 'Code expired' : `Expires in ${formatTime(timer)}`}
@@ -325,13 +325,13 @@ function VerifyOTPContent() {
                       </motion.button>
 
                       <div className="mt-4 text-center">
-                        <p className="text-slate-400 text-[11px] mb-1">
+                        <p className="text-slate-500 dark:text-slate-400 text-[11px] mb-1">
                           Did not receive the code?
                         </p>
                         <button
                           onClick={handleResendOTP}
                           disabled={resending || timer > 540}
-                          className="text-[11px] text-sky-400 hover:text-sky-300 font-semibold disabled:text-slate-500 disabled:cursor-not-allowed flex items-center gap-2 mx-auto transition-colors"
+                          className="text-[11px] text-sky-500 dark:text-sky-400 hover:text-sky-600 dark:hover:text-sky-300 font-semibold disabled:text-slate-400 dark:disabled:text-slate-500 disabled:cursor-not-allowed flex items-center gap-2 mx-auto transition-colors"
                         >
                           <RefreshCw
                             size={16}
@@ -362,12 +362,12 @@ function VerifyOTPContent() {
                         animate={{ scale: 1 }}
                         transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
                       >
-                        <CheckCircle className="mx-auto text-emerald-400 mb-4" size={56} />
+                        <CheckCircle className="mx-auto text-emerald-500 dark:text-emerald-400 mb-4" size={56} />
                       </motion.div>
-                      <h2 className="text-xl font-bold text-slate-50 mb-2">
+                      <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-2">
                         Email verified successfully
                       </h2>
-                      <p className="text-slate-400 text-sm mb-4">
+                      <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
                         Your account is now active. Redirecting you to PulseChat.
                       </p>
                       <motion.div
@@ -393,14 +393,14 @@ function VerifyOTPContent() {
 export default function VerifyOTPPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
+      <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center text-slate-200"
+          className="text-center text-slate-700 dark:text-slate-200"
         >
           <div className="relative mx-auto mb-6">
-            <div className="w-20 h-20 border-4 border-slate-800 border-t-sky-500 rounded-full animate-spin" />
+            <div className="w-20 h-20 border-4 border-slate-200 dark:border-slate-800 border-t-sky-500 rounded-full animate-spin" />
           </div>
           <p className="text-lg font-medium">Loading verification page...</p>
         </motion.div>
